@@ -1,6 +1,6 @@
 #include "ninjatodolaobject.h"
 
-ninjatodolaObject::ninjatodolaObject()
+NinjatodolaObject::NinjatodolaObject()
 {
 
 }
