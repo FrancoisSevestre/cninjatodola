@@ -41,19 +41,24 @@ public:
   bool getHightlight() const;
 
   //Set
-  void setSelfRepr();
+  void setSelfRepr(std::string const newSelfRepr);
   void setMotherList(NinjatodolaObject *newMotherList);
-  void setPositionInMotherList() const;
-  void setIndent() const;
-  void setHightlight() const;
+  void setPositionInMotherList(const int newPosition);
+  void setIndent(const int newIndent);
+  void setHightlight(const bool newHightlight);
 
   // Methodes
 
   //Representation
+  /**
+   * Change the hightlight status.
+   */
   void switchHightlight();
-  void switchHightlight(bool hightlight);
 
   //Special
+  /**
+   * Update the object attributes.
+   */
   virtual void update() = 0;
 
 
