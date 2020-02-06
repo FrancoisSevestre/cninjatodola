@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
+        ninjatodolalist.cpp \
         ninjatodolaobject.cpp
 
 HEADERS += \
+    ninjatodolalist.h \
     ninjatodolaobject.h
