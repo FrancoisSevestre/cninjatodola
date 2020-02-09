@@ -1,9 +1,9 @@
 #include "ninjatodolaobject.h"
 // Constructors
-NinjatodolaObject::NinjatodolaObject(): attrSelfRepr("NinjaTODOla"), attrMotherList(this), attrPositionInMotherList(1), attrIndent(0), attrHightlight(false)
+NinjatodolaObject::NinjatodolaObject(): attrSelfRepr("NinjaTODOla"), attrMotherList(this), attrPositionInMotherList(1), attrIndent(0), attrHightlight(false), attrType("NinjatodolaObject")
 {}
 
-NinjatodolaObject::NinjatodolaObject(std::string SelfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): attrSelfRepr(SelfRepr), attrMotherList(motherList), attrPositionInMotherList(positionInMotherList), attrIndent(Indent), attrHightlight(false)
+NinjatodolaObject::NinjatodolaObject(std::string SelfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): attrSelfRepr(SelfRepr), attrMotherList(motherList), attrPositionInMotherList(positionInMotherList), attrIndent(Indent), attrHightlight(false), attrType("NinjatodolaObject")
 {}
 
 NinjatodolaObject::~NinjatodolaObject()
@@ -37,6 +37,11 @@ bool NinjatodolaObject::getHightlight() const
   return attrHightlight;
 }
 
+std::string NinjatodolaObject::getType()
+{
+  return attrType;
+}
+
 //Set
 void NinjatodolaObject::setSelfRepr(std::string const newSelfRepr)
 {
@@ -61,6 +66,11 @@ void NinjatodolaObject::setIndent(const int newIndent)
 void NinjatodolaObject::setHightlight(const bool newHightlight)
 {
   attrHightlight = newHightlight;
+}
+
+void NinjatodolaObject::setType(const std::string newType)
+{
+  attrType = newType;
 }
 
 // Methodes

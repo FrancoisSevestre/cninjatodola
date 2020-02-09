@@ -4,6 +4,7 @@
 // standard library
 #include <iostream>
 #include <string>
+#include <string>
 #include <vector>
 
 
@@ -23,6 +24,7 @@ protected:
   int attrPositionInMotherList; // Position of the object in the list
   int attrIndent; // rank: motherlist rank + 1
   bool attrHightlight; // True if the object is selected
+  std::string attrType;
 
 
 public:
@@ -40,6 +42,7 @@ public:
   int getPositionInMotherList() const;
   int getIndent() const;
   bool getHightlight() const;
+  std::string getType();
 
   //Set
   void setSelfRepr(std::string const newSelfRepr);
@@ -47,6 +50,7 @@ public:
   void setPositionInMotherList(const int newPosition);
   void setIndent(const int newIndent);
   void setHightlight(const bool newHightlight);
+  void setType(const std::string newType);
 
   // Methodes
 

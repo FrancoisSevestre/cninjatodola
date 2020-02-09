@@ -10,19 +10,11 @@
  */
 class TaskList : public NinjatodolaList
 {
-protected:
-  std::string attrType;
-
 public:
   // Constructors
   TaskList();
   TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent);
   ~TaskList();
-
-  // Accessers
-
-  //Get
-  std::string getType();
 
   // Methodes
 
