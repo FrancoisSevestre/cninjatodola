@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ninjatodolaobject.h"
 #include "tasklist.h"
+#include "externRepresentation.h"
 
 using namespace std;
 
@@ -23,13 +24,15 @@ int main()
   liste2.addContent(&liste4);
   liste1.addContent(&liste5);
 
+  liste1.switchHightlight();
+
   vector<NinjatodolaObject*> vec;
   vec = liste1.repr(vec);
+  string finalRepr;
+  finalRepr = globalRepr(vec);
+  cout << finalRepr << endl;
 
-  for (long unsigned int i(0); i<vec.size(); i++)
-    {
-  cout << "test" << i << ": " << vec[i]->getSelfRepr() << endl;
-    }
+
 
   // end test
   return 0;
