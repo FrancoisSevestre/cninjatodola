@@ -30,10 +30,15 @@ public:
   /**
    * Returns the ordonated representation
    * of the list and its content.
+   * @param vec is a vector that will be append with pointers
    */
-  std::vector<NinjatodolaObject*> Repr();
+  std::vector<NinjatodolaObject*> repr(std::vector<NinjatodolaObject*> vec);
 
   //Special
+  /**
+   * To be implemented.
+   * Updates the content of the list (usefull in certain cases: e.g. folders).
+   */
   void update();
 };
 

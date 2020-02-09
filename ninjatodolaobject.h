@@ -55,7 +55,7 @@ public:
    * Change the hightlight status.
    */
   void switchHightlight();
-  virtual std::vector<NinjatodolaObject*> Repr() = 0;
+  virtual std::vector<NinjatodolaObject*> repr(std::vector<NinjatodolaObject*> vector) = 0;
 
   //Special
   /**
