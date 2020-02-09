@@ -4,6 +4,7 @@
 // standard library
 #include <iostream>
 #include <string>
+#include <vector>
 
 
 /**
@@ -54,6 +55,7 @@ public:
    * Change the hightlight status.
    */
   void switchHightlight();
+  virtual std::vector<NinjatodolaObject*> Repr() = 0;
 
   //Special
   /**

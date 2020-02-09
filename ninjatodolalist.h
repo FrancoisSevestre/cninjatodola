@@ -52,11 +52,6 @@ public:
   // Methodes
 
   //Representation
-  /**
-   * Should return the ordonated representation
-   * of the list and its content.
-   */
-  virtual std::vector<NinjatodolaObject*> listRepr() = 0;
 };
 
 #endif // NINJATODOLALIST_H

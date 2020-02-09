@@ -27,7 +27,11 @@ public:
   // Methodes
 
   //representation
-  std::vector<NinjatodolaObject*> listRepr();
+  /**
+   * Returns the ordonated representation
+   * of the list and its content.
+   */
+  std::vector<NinjatodolaObject*> Repr();
 
   //Special
   void update();
