@@ -2,10 +2,14 @@
 
 // Constructors
 NinjatodolaList::NinjatodolaList() : NinjatodolaObject(), attrShow(true)
-{}
+{
+  setType("NinjatodolaList");
+}
 
 NinjatodolaList::NinjatodolaList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaObject(selfRepr, motherList, positionInMotherList, Indent), attrShow(true)
-{}
+{
+  setType("NinjatodolaList");
+}
 
 // Accessers
 

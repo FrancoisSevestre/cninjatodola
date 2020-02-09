@@ -4,26 +4,18 @@
 #include <vector>
 
 // Constructors
-TaskList::TaskList(): NinjatodolaList(), attrType("TaskList")
+TaskList::TaskList(): NinjatodolaList()
 {
-
+  setType("TaskList");
 }
 
-TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent) ,attrType("TaskList")
+TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent)
 {
-
+  setType("TaskList");
 }
 TaskList::~TaskList()
 {
 
-}
-
-// Accessers
-
-//Get
-std::string TaskList::getType()
-{
-  return attrType;
 }
 
 // Methodes
