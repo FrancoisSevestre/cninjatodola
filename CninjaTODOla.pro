@@ -4,14 +4,18 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        NinjaTODOla.cpp \
         externRepresentation.cpp \
         main.cpp \
         ninjatodolalist.cpp \
         ninjatodolaobject.cpp \
-        tasklist.cpp
+        tasklist.cpp \
+        test_zone.cpp
 
 HEADERS += \
+    NinjaTODOla.h \
     externRepresentation.h \
     ninjatodolalist.h \
     ninjatodolaobject.h \
-    tasklist.h
+    tasklist.h \
+    test_zone.h
