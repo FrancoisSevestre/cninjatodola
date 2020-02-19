@@ -18,6 +18,10 @@ public:
 
   // Methodes
 
+  //Object actions
+  void action(std::string action);
+  void addSubList(bool placed);
+
   //representation
   /**
    * Returns the ordonated representation
