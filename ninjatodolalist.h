@@ -29,6 +29,7 @@ public:
   //Get
   std::vector<NinjatodolaObject*> getContent() const;
   bool getShow() const;
+  int getListSize() const;
 
   //Set
   void setShow(bool const newShow);
