@@ -54,6 +54,10 @@ public:
 
   // Methodes
 
+  //Object actions
+  virtual void action(std::string action);
+
+
   //Representation
   /**
    * Change the hightlight status.

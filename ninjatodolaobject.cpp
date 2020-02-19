@@ -87,3 +87,8 @@ void NinjatodolaObject::switchHightlight()
       attrHightlight = false;
     }
 }
+
+void NinjatodolaObject::action(std::string action)
+{
+  std::cout << "User entered: " << action << std::endl;
+}
