@@ -2,8 +2,19 @@
 #include "ninjatodolaobject.h"
 #include "tasklist.h"
 #include "externRepresentation.h"
+#include <stdlib.h>
 
 using namespace std;
+
+void mainListRepresentation(TaskList *mainList)
+{
+  system("clear");
+  vector<NinjatodolaObject*> vec;
+  vec = mainList->repr(vec);
+  string finalRepr;
+  finalRepr = globalRepr(vec);
+  cout << finalRepr << endl;
+}
 
 int Test()
 {
@@ -23,14 +34,17 @@ int Test()
     liste2.addContent(&liste4);
     liste1.addContent(&liste5);
 
-    liste1.switchHightlight();
 
-    vector<NinjatodolaObject*> vec;
-    vec = liste1.repr(vec);
-    string finalRepr;
-    finalRepr = globalRepr(vec);
-    cout << finalRepr << endl;
-
+    TaskList *currentObject(&liste1);
+    while(true)
+      {
+        currentObject->setHightlight(true);
+        mainListRepresentation(currentObject);
+        cout << "Que faire?" << endl;
+        string userChoice;
+        getline(cin, userChoice);
+        currentObject->action(userChoice);
+      }
 
 
     // end test
