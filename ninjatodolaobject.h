@@ -55,7 +55,7 @@ public:
   // Methodes
 
   //Object actions
-  virtual void action(std::string action);
+  virtual std::vector<NinjatodolaObject*> action(std::string action) = 0;
 
 
   //Representation
