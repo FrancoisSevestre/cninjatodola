@@ -18,8 +18,18 @@ public:
 
   // Methodes
 
-  //Object actions
-  void action(std::string action);
+  //Object actions: Return a vecotr of two NinjatodolaObjects (next current object
+  // and an object to store in the cache).
+  /**
+    * Not filled yet!
+    *
+   */
+  std::vector<NinjatodolaObject*> action(std::string action);
+
+  /**
+    * Not filled yet!
+    *
+   */
   void addSubList(bool placed);
 
   //representation
