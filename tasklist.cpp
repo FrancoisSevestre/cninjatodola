@@ -20,6 +20,10 @@ TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int posi
 TaskList::~TaskList()
 {
   // add destruction of the content
+  for(int i(0); i<getListSize() - 1; i++)
+    {
+      delContent(i);
+    }
 }
 
 
