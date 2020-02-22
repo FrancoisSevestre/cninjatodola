@@ -43,6 +43,7 @@ public:
   int getIndent() const;
   bool getHightlight() const;
   std::string getType();
+  virtual std::vector<NinjatodolaObject*> getContent() const = 0;
 
   //Set
   void setSelfRepr(std::string const newSelfRepr);
@@ -55,7 +56,7 @@ public:
   // Methodes
 
   //Object actions
-  virtual std::vector<NinjatodolaObject*> action(std::string action) = 0;
+  virtual NinjatodolaObject* action(std::string action) = 0;
 
 
   //Representation
@@ -70,7 +71,7 @@ public:
    * Update the object attributes.
    */
   virtual void update() = 0;
-
+  virtual void kill(int position) = 0;
 
 };
 

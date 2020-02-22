@@ -24,13 +24,25 @@ public:
     * Not filled yet!
     *
    */
-  std::vector<NinjatodolaObject*> action(std::string action);
+  NinjatodolaObject* action(std::string action);
 
   /**
     * Not filled yet!
     *
    */
   void addSubList(bool placed);
+
+  /**
+    * Not filled yet!
+    *
+   */
+  void delSublist();
+
+  /**
+    * Not filled yet!
+    *
+   */
+  void changeListName();
 
   //representation
   /**
@@ -46,6 +58,7 @@ public:
    * Updates the content of the list (usefull in certain cases: e.g. folders).
    */
   void update();
+  void kill(int position);
 };
 
 #endif // TASKLIST_H

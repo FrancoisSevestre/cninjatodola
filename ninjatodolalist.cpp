@@ -35,6 +35,18 @@ void NinjatodolaList::setShow(const bool newShow)
   attrShow = newShow;
 }
 
+void NinjatodolaList::switchShow()
+{
+  if(attrShow)
+    {
+      setShow(false);
+    }
+  else
+    {
+      setShow(true);
+    }
+}
+
 void NinjatodolaList::addContent(NinjatodolaObject *Object)
 {
   attrContent.push_back(Object);
