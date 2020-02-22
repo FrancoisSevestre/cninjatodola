@@ -10,8 +10,13 @@ using namespace std;
 int main()
 {
   cout << "Welcome to NinjaTODOla in C++" << endl<< endl;
-
-  Test();
-  NinjaTODOla();
-  return 0;
+  bool testing(false);
+  if(testing)
+    {
+      return Test();
+    }
+  else
+    {
+      return NinjaTODOla();
+    }
 }
