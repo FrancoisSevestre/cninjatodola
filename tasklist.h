@@ -10,6 +10,8 @@
  */
 class TaskList : public NinjatodolaList
 {
+protected:
+  std::string attrMessage;
 public:
   // Constructors
   TaskList();

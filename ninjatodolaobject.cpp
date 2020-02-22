@@ -42,6 +42,10 @@ std::string NinjatodolaObject::getType()
   return attrType;
 }
 
+std::string NinjatodolaObject::getMessage()
+{
+  return attrMessage;
+}
 //Set
 void NinjatodolaObject::setSelfRepr(std::string const newSelfRepr)
 {
@@ -71,6 +75,11 @@ void NinjatodolaObject::setHightlight(const bool newHightlight)
 void NinjatodolaObject::setType(const std::string newType)
 {
   attrType = newType;
+}
+
+void NinjatodolaObject::setMessage(const std::string newMessage)
+{
+  attrMessage = newMessage;
 }
 
 // Methodes

@@ -34,6 +34,8 @@ int NinjaTODOla()
   NinjatodolaObject *currentObject(0);
   currentObject = &mainList;
 
+  string menuMessage("\nMenu Principal:\n- Monter dans l'arborescence (4)\n- Descendre dans l'arborescence (6)\n- Naviguer vers le bas (2)\n- Naviguer vers le haut (8)\n- Options (o)\n- Choix liste principale (L)\n- Quitter (q)\n- Console (c)\n");
+
 //  NinjatodolaObject *objectCache(0);
   bool quitNinajtodola(false); // End the program if true
 
@@ -43,7 +45,7 @@ int NinjaTODOla()
       // Display mainList
       currentObject->setHightlight(true);
       mainListRepresentation(&mainList);
-      cout << "Que faire?" << endl;
+      cout << menuMessage << currentObject->getMessage() << endl;
 
       // Display menu
 

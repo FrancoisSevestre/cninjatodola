@@ -4,22 +4,24 @@
 #include <vector>
 #include <stdlib.h>
 
+
 // Constructors
 TaskList::TaskList(): NinjatodolaList()
 {
   setType("TaskList"); // Needs to be rectified
+    setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
 }
 
 TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent)
 {
   setType("TaskList"); // Needs to be rectified
+  setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
 }
 TaskList::~TaskList()
 {
   // add destruction of the content
 }
 
-// Methodes
 
 //Object actions
 NinjatodolaObject* TaskList::action(std::string action)
