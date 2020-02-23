@@ -10,7 +10,8 @@ SOURCES += \
         ninjatodolalist.cpp \
         ninjatodolaobject.cpp \
         tasklist.cpp \
-        test_zone.cpp
+        test_zone.cpp \
+        variousfunctions.cpp
 
 HEADERS += \
     NinjaTODOla.h \
@@ -18,4 +19,5 @@ HEADERS += \
     ninjatodolalist.h \
     ninjatodolaobject.h \
     tasklist.h \
-    test_zone.h
+    test_zone.h \
+    variousfunctions.h
