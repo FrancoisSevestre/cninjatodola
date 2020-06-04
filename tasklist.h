@@ -10,6 +10,8 @@
  */
 class TaskList : public NinjatodolaList
 {
+protected:
+  std::string attrMessage;
 public:
   // Constructors
   TaskList();
@@ -17,6 +19,32 @@ public:
   ~TaskList();
 
   // Methodes
+
+  //Object actions: Return a vecotr of two NinjatodolaObjects (next current object
+  // and an object to store in the cache).
+  /**
+    * Not filled yet!
+    *
+   */
+  NinjatodolaObject* action(std::string action);
+
+  /**
+    * Not filled yet!
+    *
+   */
+  void addSubList(bool placed);
+
+  /**
+    * Not filled yet!
+    *
+   */
+  void delSublist();
+
+  /**
+    * Not filled yet!
+    *
+   */
+  void changeListName();
 
   //representation
   /**
@@ -32,6 +60,7 @@ public:
    * Updates the content of the list (usefull in certain cases: e.g. folders).
    */
   void update();
+  void kill(int position);
 };
 
 #endif // TASKLIST_H

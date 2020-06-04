@@ -24,7 +24,8 @@ protected:
   int attrPositionInMotherList; // Position of the object in the list
   int attrIndent; // rank: motherlist rank + 1
   bool attrHightlight; // True if the object is selected
-  std::string attrType;
+  std::string attrType; // String representing object type
+  std::string attrMessage; // Messsage displayed for user to choose action
 
 
 public:
@@ -43,6 +44,8 @@ public:
   int getIndent() const;
   bool getHightlight() const;
   std::string getType();
+  virtual std::vector<NinjatodolaObject*> getContent() const = 0;
+  std::string getMessage();
 
   //Set
   void setSelfRepr(std::string const newSelfRepr);
@@ -51,8 +54,13 @@ public:
   void setIndent(const int newIndent);
   void setHightlight(const bool newHightlight);
   void setType(const std::string newType);
+  void setMessage(const std::string newMessage);
 
   // Methodes
+
+  //Object actions
+  virtual NinjatodolaObject* action(std::string action) = 0;
+
 
   //Representation
   /**
@@ -66,7 +74,7 @@ public:
    * Update the object attributes.
    */
   virtual void update() = 0;
-
+  virtual void kill(int position) = 0;
 
 };
 

@@ -29,9 +29,11 @@ public:
   //Get
   std::vector<NinjatodolaObject*> getContent() const;
   bool getShow() const;
+  int getListSize() const;
 
   //Set
   void setShow(bool const newShow);
+  void switchShow();
   /**
    * Add the object at the end of the content list.
    * @param *Object is a pointer of a NinjatodolaObject.

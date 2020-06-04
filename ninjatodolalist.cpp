@@ -23,10 +23,28 @@ bool NinjatodolaList::getShow() const
   return attrShow;
 }
 
+int NinjatodolaList::getListSize() const
+{
+  int listSize(attrContent.size());
+  return listSize;
+}
+
 //Set
 void NinjatodolaList::setShow(const bool newShow)
 {
   attrShow = newShow;
+}
+
+void NinjatodolaList::switchShow()
+{
+  if(attrShow)
+    {
+      setShow(false);
+    }
+  else
+    {
+      setShow(true);
+    }
 }
 
 void NinjatodolaList::addContent(NinjatodolaObject *Object)
