@@ -96,18 +96,24 @@ NinjatodolaObject* TaskList::action(std::string action)
       changeListName();
     }
 
-  else if(action=="$") // bla
+  else if(action=="$") // add special objects in the list
     {
-
+      //not implemented yet!
+      std::cout << "\nPas encore implémenté" << std::endl;
+      system("sleep 1");
     }
 
-  else if(action=="X") // bla
+  else if(action=="X") // Copy the object and store it in chache
     {
-
+      //not implemented yet!
+      std::cout << "\nPas encore implémenté" << std::endl;
+      system("sleep 1");
     }
-  else if(action=="V") // bla
+  else if(action=="V") // paste the object from cache and add it into list
     {
-
+      //not implemented yet!
+      std::cout << "\nPas encore implémenté" << std::endl;
+      system("sleep 1");
     }
 
   // return the next current object

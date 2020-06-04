@@ -60,11 +60,11 @@ int NinjaTODOla()
       mainListRepresentation(&mainList); // represent the whole mainList
 
       // Display menu
-      if(showMenu)
+      if(showMenu) // if menu is to be shown
         {
-          cout << menuMessage << currentObject->getMessage() << endl; //menu Message + object Message
+          cout << menuMessage << currentObject->getMessage() << endl; //menu Message+object Message
         }
-      else
+      else // hide menu
         {
           cout << ("\n-Afficher l'aide (h)") << endl;
         }
@@ -115,6 +115,19 @@ int NinjaTODOla()
               showMenu = true;
             }
         }
+      else if(userChoice=="m") //module menu: save and load lists in other lists
+        {
+          // not implemented yet!
+          cout << "\nPas encore implémenté" << endl;
+          system("sleep 1");
+        }
+      else if(userChoice=="L") // load or create a new mainlist
+        {
+          // not implemented yet
+          cout << "\nPas encore implémenté" << endl;
+          system("sleep 1");
+        }
+
       else // if the action is object dependant
         {
           // Object menu : the object returns an other object or itself
