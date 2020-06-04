@@ -7,6 +7,7 @@
 #include "ninjatodolalist.h"
 #include "tasklist.h"
 #include "externRepresentation.h"
+#include "variousfunctions.h"
 
 using namespace std;
 
@@ -51,7 +52,7 @@ int NinjaTODOla()
 
       // Ask user for action
       string userChoice;
-      getline(cin, userChoice);
+      userChoice = singleCharacterInput();
 
       // Main menu
       if(userChoice == "q")
