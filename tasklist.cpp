@@ -5,11 +5,11 @@
 #include <stdlib.h>
 
 
-// Constructors
+// Constructors: Sub-optimal
 TaskList::TaskList(): NinjatodolaList()
 {
   setType("TaskList"); // Needs to be rectified
-    setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
+  setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
 }
 
 TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent)
@@ -30,22 +30,22 @@ TaskList::~TaskList()
 //Object actions
 NinjatodolaObject* TaskList::action(std::string action)
 {
-  NinjatodolaObject* toBeReturned(this);
+  NinjatodolaObject* toBeReturned(this); // the object return itself or another object
   if(action=="+") // Add a new sublist at the end of the list
     {
-      std::cout << "l'utilisateur souhaite ajouter un objet" << std::endl;
+      // info: std::cout << "l'utilisateur souhaite ajouter un objet" << std::endl;
       addSubList(false);
     }
 
   else if(action=="/") // Add a new sublist at a specified position
     {
-      std::cout << "l'utilisateur souhaite ajouter un objet placé" << std::endl;
+      //info: std::cout << "l'utilisateur souhaite ajouter un objet placé" << std::endl;
       addSubList(true);
     }
 
   else if(action=="-") // Del a sublist at a specified position
     {
-      std::cout << "l'utilisateur souhaite supprimer un objet" << std::endl;
+      // info: std::cout << "l'utilisateur souhaite supprimer un objet" << std::endl;
       delSublist();
     }
 
@@ -101,12 +101,18 @@ NinjatodolaObject* TaskList::action(std::string action)
   return toBeReturned;
 }
 
-void TaskList::addSubList(bool placed)
+void TaskList::addSubList(bool placed) // BUGGED! :after a placed, the taskname is empty
 {
   // Ask the name of the sublist
   std::string taskName(""); // Non-void
-  std::cout << "Enter a name: ";
+  std::cout << "\nEnter a name: ";
   std::getline(std::cin, taskName); // User input
+
+  //test
+  if (taskName == "")
+    {
+      taskName = "Vide";
+    }
 
   if(placed)
     {
@@ -118,6 +124,7 @@ void TaskList::addSubList(bool placed)
         {
         std::cout << "Entrer une position: ";
         std::cin >> taskPosition;
+        std::cin.ignore(); // debug
 
         if(std::cin.fail() || (taskPosition > attrContent.size())) // if user didn't enter proper position
           {
@@ -138,35 +145,54 @@ void TaskList::addSubList(bool placed)
     }
   else
     {
-      addContent(new TaskList(taskName, this, getListSize() + 1, getIndent() + 1)); // create a new TaskList and add the pointer to the list
+      int futurPosition; // The futur position of the freshly created object
+      if (getListSize()<1) // if the list is empty
+        {
+          futurPosition = 0;
+        }
+      else // if the liste is not empty
+        {
+          futurPosition = getListSize() + 1;
+        }
+      addContent(new TaskList(taskName, this, futurPosition, getIndent() + 1)); // create a new TaskList and add the pointer to the list
     }
 }
 
 void TaskList::delSublist()
 {
-  //Ask for position
-  long unsigned int taskPosition;
-  // Verify that user entered a proper int:
-  std::cout << "Entrer une position: ";
-  std::cin >> taskPosition;
-
-  if(std::cin.fail() || (taskPosition > attrContent.size() - 1)) // if user didn't enter proper position
+  //Check if list is not empty
+  if (getListSize()<1)
     {
-      // user didn't input a number
-      std::cin.clear(); // reset failbit
-      std::cout << "Ce n'est pas une position valide!" << std::endl;
-      std::cin.ignore(256, '\n'); // discard characters
+      std::cout << "\nLa liste est vide! " << std::endl;
+      system("sleep 1"); //Sleep for 1 sec (UNIX only)
     }
   else
     {
-      delContent(taskPosition);
+      //Ask for position
+      long unsigned int taskPosition;
+      // Verify that user entered a proper int:
+      std::cout << "\nEntrer une position: ";
+      std::cin >> taskPosition;
+      std::cin.ignore(); // debug
+
+      if(std::cin.fail() || (taskPosition > attrContent.size() - 1)) // if user didn't enter proper position
+        {
+          // user didn't input a number
+          std::cin.clear(); // reset failbit
+          std::cout << "Ce n'est pas une position valide!" << std::endl;
+          std::cin.ignore(256, '\n'); // discard characters
+        }
+      else
+        {
+          delContent(taskPosition);
+        }
     }
 }
 
 void TaskList::changeListName()
 {
   std::string newListName;
-  std::cout << "Entrer le nouveau nom de la liste: " << std::endl;
+  std::cout << "\nEntrer le nouveau nom de la liste: " << std::endl;
   std::getline(std::cin, newListName); // Ask user for new list name
   setSelfRepr(newListName);
 }
@@ -190,7 +216,7 @@ std::vector<NinjatodolaObject*> TaskList::repr(std::vector<NinjatodolaObject*> v
 }
 
 //Special
-void TaskList::update()
+void TaskList::update() //reorder and unhighlight things
 {
   setHightlight(false);
   for(unsigned long int i(0); i<attrContent.size(); i++)
@@ -199,6 +225,7 @@ void TaskList::update()
       attrContent[i]->setMotherList(this);
       attrContent[i]->setHightlight(false);
       attrContent[i]->setPositionInMotherList(i);
+      attrContent[i]->update();
 
     }
 }
