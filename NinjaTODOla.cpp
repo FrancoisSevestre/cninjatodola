@@ -46,7 +46,8 @@ int NinjaTODOla()
       // to be implemented!
     }
 
-  string menuMessage("\nMenu Principal:\n- Monter dans l'arborescence (4)\n- Descendre dans l'arborescence (6)\n- Naviguer vers le bas (2)\n- Naviguer vers le haut (8)\n- Options (o)\n- Choix liste principale (L)\n- Quitter (q)\n- Console (c)\n");
+  string menuMessage("\nMenu Principal:\n- Monter dans l'arborescence (4)\n- Descendre dans l'arborescence (6)\n- Naviguer vers le bas (2)\n- Naviguer vers le haut (8)\n- Supprimer (k)\n- Choix liste principale (L)\n- Menu module (m)\n- Console (c)\n- Options (o)\n- Cacher l'aide (h)\n- Quitter (q)\n");
+  bool showMenu(false);
 
 //  NinjatodolaObject *objectCache(0); // if cache is implemented
   bool quitNinajtodola(false); // End the program if true
@@ -59,8 +60,14 @@ int NinjaTODOla()
       mainListRepresentation(&mainList); // represent the whole mainList
 
       // Display menu
-      cout << menuMessage << currentObject->getMessage() << endl; //menu Message + object Message
-
+      if(showMenu)
+        {
+          cout << menuMessage << currentObject->getMessage() << endl; //menu Message + object Message
+        }
+      else
+        {
+          cout << ("\n-Afficher l'aide (h)") << endl;
+        }
 
 
       // Ask user for action
@@ -88,13 +95,26 @@ int NinjaTODOla()
         }
       else if (userChoice=="c") // Use console
         {
-          //not implemented yet!
+          system("clear"); // clear screen
+          system("cd ~ && $SHELL"); //lunch user's shell
         }
       else if (userChoice=="o") // goto options
         {
           //not implemented yet!
+          cout << "\nPas encore implémenté" << endl;
+          system("sleep 1");
         }
-
+      else if(userChoice=="h") // Display help or not
+        {
+          if (showMenu)
+            {
+              showMenu = false;
+            }
+          else
+            {
+              showMenu = true;
+            }
+        }
       else // if the action is object dependant
         {
           // Object menu : the object returns an other object or itself

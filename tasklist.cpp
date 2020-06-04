@@ -9,7 +9,7 @@
 TaskList::TaskList(): NinjatodolaList()
 {
   setType("TaskList"); // Needs to be rectified
-  setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
+  setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Renommer la liste (r)");
 }
 
 TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent)
@@ -96,6 +96,19 @@ NinjatodolaObject* TaskList::action(std::string action)
       changeListName();
     }
 
+  else if(action=="$") // bla
+    {
+
+    }
+
+  else if(action=="X") // bla
+    {
+
+    }
+  else if(action=="V") // bla
+    {
+
+    }
 
   // return the next current object
   return toBeReturned;

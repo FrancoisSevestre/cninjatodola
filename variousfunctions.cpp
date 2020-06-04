@@ -6,7 +6,8 @@
 
 std::string singleCharacterInput()
 {
-  system("read -N 1 -t 30 variable  && echo $variable > /tmp/userChoice");
+  system("rm /tmp/userChoice 2> /dev/null"); // remove previous user choice
+  system("read -N 1 -t 30 variable  && echo $variable > /tmp/userChoice"); // create a temp file
   std::ifstream tmpfile;
   std::string userChoice;
   tmpfile.open("/tmp/userChoice", std::ios::in);
