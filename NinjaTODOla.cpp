@@ -1,6 +1,9 @@
 // Standard libraries
 #include <iostream>
 #include <stdlib.h>
+#include <fstream>
+#include <string>
+#include <vector>
 
 // Custom libraries
 #include "ninjatodolaobject.h"
@@ -11,40 +14,100 @@
 
 using namespace std;
 
-void mainListRepresentation(NinjatodolaObject *mainList)
+void mainListRepresentation(TaskList mainList)
 {
   system("clear");
   vector<NinjatodolaObject*> vec;
-  vec = mainList->repr(vec);
+  vec = mainList.repr(vec);
   string finalRepr;
   finalRepr = globalRepr(vec);
   cout << finalRepr << endl;
 }
 
+void saveList(NinjatodolaObject *list)
+{
+  vector<NinjatodolaObject*> vec;
+  vec = list->repr(vec); // get every object ordered in a vector
+  string saveFileName("Save.save"); //file name will depend on user's configuration later
+  ofstream saveFile;//open a stream
+  saveFile.open(saveFileName, ios::out);
+  string saveString; //the string to be saved
+  for(int i(0); i<vec.size(); i++)
+  {
+    string objectString; // line that will be saved for the object
+    string indent;
+    indent = to_string(vec[i]->getIndent());
+
+    objectString += indent + ";";
+    objectString += vec[i]->getType() + ";";
+    objectString += vec[i]->getSelfRepr() + ";";
+    string show;
+    if (vec[i])
+    {
+      show = "1";
+    }
+    else
+    {
+      show = "0";
+    }
+    objectString += show + ";";
+    saveString += objectString + "\n";
+  }
+  saveFile << saveString + "\n";
+  saveFile.close();
+}
+
+vector<string> loadList()
+{
+  // open a stream
+  string saveFileName("Save.save");
+  ifstream saveFile;
+  saveFile.open(saveFileName);
+  // extract line by line
+  vector<string> saveString;
+  string line;
+  while (getline(saveFile, line))
+  {
+    saveString.push_back(line);
+  }
+  saveFile.close();
+
+  //erase empty last string
+  saveString.erase(saveString.end());
+  // return the mainList
+  return saveString;
+}
+
 int NinjaTODOla()
 {
   //manage save
-    //to be filled!
-  bool noSave(true); //for now!
+    bool noSave;
+    if(fileExists("Save.save"))
+    {
+      noSave = false;
+    }
+    else
+    {
+      noSave = true;
+    }
+    
 
   // Init:
 
   NinjatodolaObject *currentObject(0); //create a pointer to the current object
   TaskList mainList; // create mainlist object
+  mainList.setMotherList(&mainList);
+  mainList.setSelfRepr("Liste principale");
+  mainList.setPositionInMotherList(0);
+  mainList.setIndent(0);
+  currentObject = &mainList;
 
-  if (noSave) // if no list is loaded
+  if (!noSave) // if there is a saveFile
     {
-      mainList.setMotherList(&mainList);
-      mainList.setSelfRepr("Liste principale");
-      mainList.setPositionInMotherList(0);
-      mainList.setIndent(0);
-      currentObject = &mainList;
+      mainList.loadFromString(loadList());
+      mainList.update();
     }
-  else // if a list as been loaded
-    {
-      //then currentObject = this list
-      // to be implemented!
-    }
+
 
   string menuMessage("\nMenu Principal:\n- Monter dans l'arborescence (4)\n- Descendre dans l'arborescence (6)\n- Naviguer vers le bas (2)\n- Naviguer vers le haut (8)\n- Supprimer (k)\n- Choix liste principale (L)\n- Menu module (m)\n- Console (c)\n- Options (o)\n- Cacher l'aide (h)\n- Quitter (q)\n");
   bool showMenu(false);
@@ -57,7 +120,8 @@ int NinjaTODOla()
     {
       // Display mainList
       currentObject->setHightlight(true); //hightlight the current object
-      mainListRepresentation(&mainList); // represent the whole mainList
+      // TaskList *mainListPtr(&mainList);//create a ptr to mainList
+      mainListRepresentation(mainList) ; // represent the whole mainList
 
       // Display menu
       if(showMenu) // if menu is to be shown
@@ -137,10 +201,12 @@ int NinjaTODOla()
 
           // Analyse choice
           currentObject = actionReturn; // the current object changes
+          saveList(&mainList);
         }
 
       // update
       mainList.update();
+      saveList(&mainList);
     }
 
   return 0;

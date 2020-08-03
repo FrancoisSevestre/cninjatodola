@@ -1,6 +1,8 @@
 #ifndef TASKLIST_H
 #define TASKLIST_H
 #include "ninjatodolalist.h"
+#include <vector>
+#include <string>
 
 
 
@@ -16,6 +18,7 @@ public:
   // Constructors
   TaskList();
   TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent);
+  TaskList(TaskList *ListeToCopy);
   ~TaskList();
 
   // Methodes
@@ -56,10 +59,13 @@ public:
 
   //Special
   /**
-   * To be implemented.
    * Updates the content of the list (usefull in certain cases: e.g. folders).
    */
   void update();
+    /**
+   * Changes the TaskList attr, adds its content and recursively order them to do the same thing.
+   */
+  void loadFromString(std::vector<std::string> saveString);
   void kill(int position);
 };
 

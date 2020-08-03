@@ -74,6 +74,7 @@ public:
    * Update the object attributes.
    */
   virtual void update() = 0;
+  virtual void loadFromString(std::vector<std::string> saveString) = 0;
   virtual void kill(int position) = 0;
 
 };
