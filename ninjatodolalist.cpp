@@ -1,4 +1,4 @@
-#include "ninjatodolalist.h"
+#include "ninjatodolalist.hpp"
 
 // Constructors
 NinjatodolaList::NinjatodolaList() : NinjatodolaObject(), attrShow(true)

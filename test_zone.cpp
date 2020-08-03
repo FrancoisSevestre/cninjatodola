@@ -1,9 +1,10 @@
-#include <iostream>
-#include "ninjatodolaobject.h"
-#include "tasklist.h"
-#include "externRepresentation.h"
+#include "ninjatodolaobject.hpp"
+#include "tasklist.hpp"
+#include "externRepresentation.hpp"
+
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 
 using namespace std;
 

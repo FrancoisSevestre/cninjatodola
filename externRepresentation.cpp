@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 //custom libraries
-#include "ninjatodolaobject.h"
-#include "ninjatodolalist.h"
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
+#include "ninjatodolalist.hpp"
+#include "ninjatodolaobject.hpp"
 
 //Theme variable
 std::string indentationString("   ");

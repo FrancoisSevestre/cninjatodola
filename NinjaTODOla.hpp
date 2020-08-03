@@ -1,7 +1,7 @@
 #ifndef NINJATODOLA_H
 #define NINJATODOLA_H
 
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
 #include <string>
 #include <vector>
 

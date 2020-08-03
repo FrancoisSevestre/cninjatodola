@@ -2,7 +2,7 @@
 #define NINJATODOLALIST_H
 
 // standard library
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
 #include <vector>
 
 

@@ -1,30 +1,25 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef COMMAND_H
+#define COMMAND_H
 
 //custom libraries
-#include "ninjatodolalist.hpp"
+#include "ninjatodolaobject.hpp"
 
-//standard libraries
-#include <vector>
+//std libraries
 #include <string>
 
 /**
- * Application is a list of commands.
- *
- * Can display them, run them one after the other like a script.
- * Can also display the result of its execution instead of its name.
- *
+ * 
+ * 
+ * 
  */
-class Application : public NinjatodolaList
+class Command
 {
-    protected:
-
-    public:
-
-    //Constructors
-    Application();
-    Application(Application *listeToCopy);
-    ~Application();
+private:
+    /* data */
+public:
+    Command();
+    Command(Command *toCopy);
+    ~Command();
 
     //Methodes
     /**
@@ -32,8 +27,12 @@ class Application : public NinjatodolaList
     *
     */
     NinjatodolaObject* action(std::string action);
-
     /**
+    * not filled yet!
+    *
+    */
+    std::vector<NinjatodolaObject*> getContent() const; // should return nothing
+   /**
    * Returns the ordonated representation
    * of the list and its content.
    * @param vec is a vector that will be append with pointers
@@ -51,6 +50,9 @@ class Application : public NinjatodolaList
     void loadFromString(std::vector<std::string> saveString);
     void kill(int position);
 
+
+
 };
 
-#endif // APPLICATION_H
+
+#endif // COMMAND_H

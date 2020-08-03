@@ -1,9 +1,10 @@
-#include "tasklist.h"
+#include "tasklist.hpp"
+#include "variousfunctions.hpp"
+
 // std libraries
 #include <string>
 #include <vector>
 #include <stdlib.h>
-#include "variousfunctions.h"
 #include <iostream>
 
 

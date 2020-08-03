@@ -1,6 +1,10 @@
 #ifndef TASKLIST_H
 #define TASKLIST_H
-#include "ninjatodolalist.h"
+
+//custom libraries
+#include "ninjatodolalist.hpp"
+
+//standard libraries
 #include <vector>
 #include <string>
 

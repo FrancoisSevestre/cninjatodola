@@ -6,11 +6,11 @@
 #include <vector>
 
 // Custom libraries
-#include "ninjatodolaobject.h"
-#include "ninjatodolalist.h"
-#include "tasklist.h"
-#include "externRepresentation.h"
-#include "variousfunctions.h"
+#include "ninjatodolaobject.hpp"
+#include "ninjatodolalist.hpp"
+#include "tasklist.hpp"
+#include "externRepresentation.hpp"
+#include "variousfunctions.hpp"
 
 using namespace std;
 
