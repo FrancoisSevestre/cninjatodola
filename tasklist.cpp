@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include "variousfunctions.h"
+#include <iostream>
 
 
 // Constructors: Sub-optimal
@@ -11,12 +13,25 @@ TaskList::TaskList(): NinjatodolaList()
   setType("TaskList"); // Needs to be rectified
   setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Renommer la liste (r)");
 }
-
+TaskList::TaskList(TaskList *ListeToCopy)
+{
+  setType("TaskList"); // Needs to be rectified
+  setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
+  setSelfRepr(ListeToCopy->getSelfRepr());
+  setMotherList(&ListeToCopy->getMotherList());
+  setPositionInMotherList(ListeToCopy->getPositionInMotherList());
+  setIndent(ListeToCopy->getIndent());
+  for(int i(0); i<attrContent.size() -1; i++)
+  {
+    ListeToCopy->addContent(attrContent[i]);
+  }
+}
 TaskList::TaskList(std::string selfRepr, NinjatodolaObject *motherList, int positionInMotherList, int Indent): NinjatodolaList(selfRepr, motherList, positionInMotherList, Indent)
 {
   setType("TaskList"); // Needs to be rectified
   setMessage("\nMenu d'objet:\n- Ajouter une tâche (+)\n- Supprimer une tâche (-)\n- Placer une tâche (/)\n- Ajouter un objet spécial ($)\n- Développer/Réduire (!)\n- Couper (X)\n- Coller (V)\n- Menu module (m)\n- Renommer la liste (r)\n- Executer une app de la liste (e)\n- Supprimer la liste (k)");
 }
+
 TaskList::~TaskList()
 {
   // add destruction of the content
@@ -247,6 +262,99 @@ void TaskList::update() //reorder and unhighlight things
       attrContent[i]->update();
 
     }
+}
+
+void TaskList::loadFromString(std::vector<std::string> saveString)
+{
+  // load self from the first line
+    //get attr
+  int indent = stoi(cutString(saveString[0], ";")[0]);
+  std::string type = cutString(saveString[0], ";")[1];
+  std::string selfRepr = cutString(saveString[0], ";")[2];
+  bool show = stoi(cutString(saveString[0], ";")[3]);
+    //change attr of self
+  setIndent(indent);
+  setType(type); //useless
+  setSelfRepr(selfRepr);
+  setShow(show);
+
+  saveString.erase(saveString.begin()); // erase first line
+  bool finished(false);
+  while(!finished)
+  {
+    if (saveString.size() > 1) //if there is several objects on the list
+    {
+      bool found(false);
+      //the first line as ident +1
+      for(int i(1); i<saveString.size(); i++) //find the next ident +1 position
+      {
+        if (found)
+        {
+          break; // if already found, no more search
+        }
+
+        if(stoi(cutString(saveString[i], ";")[0]) == getIndent()+1) // if found
+        {
+          //position is i
+          found = true;
+          std::vector<std::string> subSaveString; //create sub-vector
+
+          for(int z(0); z != i; z++)// fill the sub-vector (i+1)
+          {
+            subSaveString.push_back(saveString[z]);
+          }
+          //erase from vector
+          saveString.erase(saveString.begin(), saveString.begin() + i);
+
+          // Create object
+          if(cutString(subSaveString[0], ";")[1] == "TaskList") // Find what kind of object to create
+          {
+            TaskList *newList;
+            newList = new TaskList();
+            newList->loadFromString(subSaveString);
+            addContent(newList);
+          }
+        }
+      }
+      if(!found) //not found
+      {
+        //not found at all => the rest of the liste belongs to first line
+        std::vector<std::string> subSaveString; //create sub-vector
+        for(int z(0); z<saveString.size(); z++)// fill the sub-vector
+        {
+        subSaveString.push_back(saveString[z]);
+        }
+        //erase from vector
+        saveString.erase(saveString.begin(), saveString.end());
+
+        // Create object
+        if(cutString(subSaveString[0], ";")[1] == "TaskList") // Find what kind of object to create
+        {
+          TaskList *newList;
+          newList = new TaskList();
+          newList->loadFromString(subSaveString);
+          addContent(newList);
+        }
+      }
+    }
+
+    if(saveString.size() == 1) // if there is only on objects in the list
+    {
+        if(cutString(saveString[0], ";")[1] == "TaskList") // Find what kind of object to create
+          {
+            TaskList *newList;
+            newList = new TaskList();
+            newList->loadFromString(saveString);
+            addContent(newList);
+          }
+    finished = true;
+    }
+
+    if(saveString.size() < 1) // if the list is empty
+    {
+      finished = true;
+    }
+  }
 }
 
 void TaskList::kill(int position)
