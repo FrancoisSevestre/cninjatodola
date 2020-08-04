@@ -1,5 +1,6 @@
 #include "tasklist.hpp"
 #include "variousfunctions.hpp"
+#include "command.hpp"
 
 // std libraries
 #include <string>
@@ -114,9 +115,37 @@ NinjatodolaObject* TaskList::action(std::string action)
 
   else if(action=="$") // add special objects in the list
     {
-      //not implemented yet!
-      std::cout << "\nPas encore implémenté" << std::endl;
-      system("sleep 1");
+      std::cout << "Quel type d'objet ajouter?\n1-Application\n2-Commande\n3-Lien vers une liste\n4-Dossier\n5-Fichier\n>";
+      long unsigned int typeChoice;
+      std::cin >> typeChoice;
+      std::cin.ignore();
+      if(!std::cin.fail()) //To verify
+      {
+          if(typeChoice == 1)
+          {
+              addApplication();
+          }
+          else if (typeChoice == 2)
+          {
+              addCommand();
+          }
+          else if (typeChoice == 3)
+          {
+              addLink();
+          }
+          else if (typeChoice == 4)
+          {
+              addDirectory();
+          }
+          else if (typeChoice == 5)
+          {
+              addFile();
+          }
+          else
+          {
+              std::cout << "Erreur: Le choix n'est pas dans la liste." << std::endl;
+          }
+      }
     }
 
   else if(action=="X") // Copy the object and store it in chache
@@ -232,6 +261,56 @@ void TaskList::changeListName()
   setSelfRepr(newListName);
 }
 
+void TaskList::addApplication()
+{
+
+}
+
+void TaskList::addCommand()
+{
+  //Ask for position
+  long unsigned int commandPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> commandPosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (commandPosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new Command(true), commandPosition); // create a new Command and add the pointer to the list
+
+}
+
+void TaskList::addLink()
+{
+
+}
+
+void TaskList::addDirectory()
+{
+
+}
+
+void TaskList::addFile()
+{
+  
+}
+
 //Representation
 std::vector<NinjatodolaObject*> TaskList::repr(std::vector<NinjatodolaObject*> vec)
 {
@@ -263,6 +342,24 @@ void TaskList::update() //reorder and unhighlight things
       attrContent[i]->update();
 
     }
+}
+
+std::string TaskList::saveAsString()
+{
+  //save list string
+  std::string saveString;
+  saveString += std::to_string(attrIndent) + ";";
+  saveString += attrType + ";";
+  saveString += attrSelfRepr + ";";
+  saveString += std::to_string(attrShow) + ";";
+  saveString += "\n";
+
+  //add liste content
+  for(unsigned long int i(0); i<attrContent.size(); i++)
+  {
+    saveString += attrContent[i]->saveAsString();
+  }
+  return saveString;
 }
 
 void TaskList::loadFromString(std::vector<std::string> saveString)
@@ -315,6 +412,14 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newList->loadFromString(subSaveString);
             addContent(newList);
           }
+          else if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(subSaveString);
+            addContent(newCommand);
+          }
+
         }
       }
       if(!found) //not found
@@ -336,6 +441,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
           newList->loadFromString(subSaveString);
           addContent(newList);
         }
+        else if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(subSaveString);
+            addContent(newCommand);
+          }
       }
     }
 
@@ -347,6 +459,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newList = new TaskList();
             newList->loadFromString(saveString);
             addContent(newList);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(saveString);
+            addContent(newCommand);
           }
     finished = true;
     }

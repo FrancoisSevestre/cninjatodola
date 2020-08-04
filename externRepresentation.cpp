@@ -68,6 +68,62 @@ std::string globalRepr(std::vector<NinjatodolaObject*> vecToBeReprensented)
           elementRepresentation += "\n"; // finish line
           globalRepresentation += elementRepresentation;
         }
+      
+      else if (vecToBeReprensented[i]->getType() == "Command")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "> "; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightBlue, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredYellow, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
+      
+      else if (vecToBeReprensented[i]->getType() == "Application")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "."; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightBlue, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredBlue, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
       // Insert new ObjectTypes HERE!
     }
 

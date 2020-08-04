@@ -53,6 +53,11 @@ public:
    */
   void changeListName();
 
+  void addApplication();
+  void addCommand();
+  void addLink();
+  void addDirectory();
+  void addFile();
   //representation
   /**
    * Returns the ordonated representation
@@ -66,6 +71,7 @@ public:
    * Updates the content of the list (usefull in certain cases: e.g. folders).
    */
   void update();
+  std::string saveAsString();
     /**
    * Changes the TaskList attr, adds its content and recursively order them to do the same thing.
    */

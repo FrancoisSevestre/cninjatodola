@@ -26,34 +26,12 @@ void mainListRepresentation(TaskList mainList)
 
 void saveList(NinjatodolaObject *list)
 {
-  vector<NinjatodolaObject*> vec;
-  vec = list->repr(vec); // get every object ordered in a vector
   string saveFileName("Save.save"); //file name will depend on user's configuration later
   ofstream saveFile;//open a stream
   saveFile.open(saveFileName, ios::out);
   string saveString; //the string to be saved
-  for(int i(0); i<vec.size(); i++)
-  {
-    string objectString; // line that will be saved for the object
-    string indent;
-    indent = to_string(vec[i]->getIndent());
-
-    objectString += indent + ";";
-    objectString += vec[i]->getType() + ";";
-    objectString += vec[i]->getSelfRepr() + ";";
-    string show;
-    if (vec[i])
-    {
-      show = "1";
-    }
-    else
-    {
-      show = "0";
-    }
-    objectString += show + ";";
-    saveString += objectString + "\n";
-  }
-  saveFile << saveString + "\n";
+  saveString = list->saveAsString();
+  saveFile << saveString;
   saveFile.close();
 }
 
@@ -73,7 +51,7 @@ vector<string> loadList()
   saveFile.close();
 
   //erase empty last string
-  saveString.erase(saveString.end());
+  // saveString.erase(saveString.end());
   // return the mainList
   return saveString;
 }
