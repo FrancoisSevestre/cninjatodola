@@ -17,12 +17,14 @@
  */
 class Application : public NinjatodolaList
 {
-    protected:
-
-    public:
+protected:
+    std::string attrLanguage;
+    bool attrInterpret;
+    std::string attrName;
+public:
 
     //Constructors
-    Application();
+    Application(bool ApptoBeSet=false);
     Application(Application *listeToCopy);
     ~Application();
 
@@ -32,6 +34,21 @@ class Application : public NinjatodolaList
     *
     */
     NinjatodolaObject* action(std::string action);
+
+    void changeAppName();
+    void addCommand(bool placed);
+    void delCommand();
+    void setLanguage();
+    void setLanguage(std::string language);
+    void setName(std::string name);
+    //Gets
+    std::string getLanguage();
+    void switchInterpret();
+    bool getInterpret();
+    void setInterpret(bool interpret);
+    std::string getName();
+    void executeSelf(bool exportOutput);
+
 
     /**
    * Returns the ordonated representation
@@ -45,6 +62,7 @@ class Application : public NinjatodolaList
      * Updates the content of the list (usefull in certain cases: e.g. folders).
      */
     void update();
+    std::string saveAsString();
         /**
      * Changes the TaskList attr, adds its content and recursively order them to do the same thing.
      */

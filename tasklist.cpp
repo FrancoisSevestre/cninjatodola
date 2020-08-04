@@ -1,7 +1,7 @@
 #include "tasklist.hpp"
 #include "variousfunctions.hpp"
 #include "command.hpp"
-
+#include "Application.hpp"
 // std libraries
 #include <string>
 #include <vector>
@@ -165,7 +165,7 @@ NinjatodolaObject* TaskList::action(std::string action)
   return toBeReturned;
 }
 
-void TaskList::addSubList(bool placed) // BUGGED! :after a placed, the taskname is empty
+void TaskList::addSubList(bool placed) 
 {
   // Ask the name of the sublist
   std::string taskName(""); // Non-void
@@ -263,7 +263,31 @@ void TaskList::changeListName()
 
 void TaskList::addApplication()
 {
+  //Ask for position
+  long unsigned int AppPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+    {
+    std::cout << "Entrer une position: ";
+    std::cin >> AppPosition;
+    std::cin.ignore(); // debug
 
+    if(std::cin.fail() || (AppPosition > attrContent.size())) // if user didn't enter proper position
+      {
+        // user didn't input a number
+        std::cin.clear(); // reset failbit
+        std::cout << "Ce n'est pas une position valide!" << std::endl;
+        std::cin.ignore(256, '\n'); // discard characters
+      }
+
+    else
+      {
+        isOK = true;
+      }
+    }
+
+    addContent(new Application(true), AppPosition); // create a new Application and add the pointer to the list
 }
 
 void TaskList::addCommand()
@@ -419,6 +443,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newCommand->loadFromString(subSaveString);
             addContent(newCommand);
           }
+          else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(saveString);
+            addContent(newApplication);
+          }
 
         }
       }
@@ -448,6 +479,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newCommand->loadFromString(subSaveString);
             addContent(newCommand);
           }
+        else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(saveString);
+            addContent(newApplication);
+          }
       }
     }
 
@@ -466,6 +504,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newCommand = new Command();
             newCommand->loadFromString(saveString);
             addContent(newCommand);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(saveString);
+            addContent(newApplication);
           }
     finished = true;
     }
