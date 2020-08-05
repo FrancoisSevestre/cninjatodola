@@ -37,6 +37,7 @@ Application::Application(Application *listeToCopy) :NinjatodolaList()
     setMotherList(&listeToCopy->getMotherList());
     setPositionInMotherList(listeToCopy->getPositionInMotherList());
     setType(listeToCopy->getType());
+    //copy content
 }
 
 Application::~Application()
@@ -75,6 +76,7 @@ NinjatodolaObject* Application::action(std::string action)
 
   else if(action == "6") // Move right
     {
+      setShow(true);
       // Verify that the object is not empty
       if(getListSize() > 0)
         {
@@ -118,9 +120,7 @@ NinjatodolaObject* Application::action(std::string action)
   else if(action==":") // Add a new command at a specified position
     {
       switchInterpret();
-
-      std::cout << "je suis ici, interpret=" << attrInterpret << std::endl;
-            system("sleep 1");
+      update();
     }
 
   else if(action=="r") // rename the task
@@ -325,15 +325,16 @@ void Application::executeSelf(bool exportOutput=false)
             for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
             {
                 commandToBeExecuted += attrContent[i]->getSelfRepr();
-                commandToBeExecuted += " && "; //separates each command
+                commandToBeExecuted += " > /tmp/appOutput.tmp && "; //separates each command
             }
-            commandToBeExecuted += " > /tmp/appOutput.tmp &";
+            commandToBeExecuted += "sleep 0";
             system(commandToBeExecuted.c_str()); 
             std::ifstream appOutput;
             appOutput.open("/tmp/appOutput.tmp");
             std::string stringOutput;
             getline(appOutput, stringOutput);
             appOutput.close();
+            remove("/tmp/appOutput.tmp");
             setSelfRepr(stringOutput);
 
         }
@@ -350,22 +351,16 @@ std::vector<NinjatodolaObject*> Application::repr(std::vector<NinjatodolaObject*
   std::vector<NinjatodolaObject*> reprVector(vec);
 
   // add self to vector
-    //update SelfRepr
-    if(attrInterpret)
-    {
-        executeSelf(true);
-    }
-    else
-    {
-        attrSelfRepr = attrName;
-    }
-    
+    //update SelfRepr  
   reprVector.push_back(this); //sent it instead of this
 
-  // pass to content
-  for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
+    if(attrShow)
     {
-      reprVector = attrContent[i]->repr(reprVector);
+    // pass to content
+    for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
+      {
+        reprVector = attrContent[i]->repr(reprVector);
+      }
     }
   //return vector
   return reprVector;
@@ -374,6 +369,15 @@ std::vector<NinjatodolaObject*> Application::repr(std::vector<NinjatodolaObject*
 void Application::update()
 {
   setHightlight(false);
+if(!attrInterpret)
+{
+    attrSelfRepr = attrName;
+}
+else
+{
+    executeSelf(true);
+}
+
   for(unsigned long int i(0); i<attrContent.size(); i++)
     {
       attrContent[i]->setIndent(getIndent() + 1);
@@ -424,86 +428,19 @@ void Application::loadFromString(std::vector<std::string> saveString)
     setShow(show);
 
   saveString.erase(saveString.begin()); // erase first line
-  bool finished(false);
-  while(!finished)
-  {
-    if (saveString.size() > 1) //if there is several objects on the list
+
+    for (int i(0); i<saveString.size(); i++) // ad command for each line
     {
-      bool found(false);
-      //the first line as ident +1
-      for(int i(1); i<saveString.size(); i++) //find the next ident +1 position
-      {
-        if (found)
-        {
-          break; // if already found, no more search
-        }
+        std::vector<std::string > subSaveString;
+        subSaveString.push_back(saveString[i]);
 
-        if(stoi(cutString(saveString[i], ";")[0]) == getIndent()+1) // if found
-        {
-          //position is i
-          found = true;
-          std::vector<std::string> subSaveString; //create sub-vector
-
-          for(int z(0); z != i; z++)// fill the sub-vector (i+1)
-          {
-            subSaveString.push_back(saveString[z]);
-          }
-          //erase from vector
-          saveString.erase(saveString.begin(), saveString.begin() + i);
-
-          // Create object
-        if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
-          {
-            Command *newCommand;
-            newCommand = new Command();
-            newCommand->loadFromString(subSaveString);
-            addContent(newCommand);
-          }
-        }
-      }
-      if(!found) //not found
-      {
-        //not found at all => the rest of the liste belongs to first line
-        std::vector<std::string> subSaveString; //create sub-vector
-        for(int z(0); z<saveString.size(); z++)// fill the sub-vector
-        {
-        subSaveString.push_back(saveString[z]);
-        }
-        //erase from vector
-        saveString.erase(saveString.begin(), saveString.end());
-
-        // Create object
-
-        if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
-          {
-            Command *newCommand;
-            newCommand = new Command();
-            newCommand->loadFromString(subSaveString);
-            addContent(newCommand);
-          }
-      }
+        Command *newCommand;
+        newCommand = new Command();
+        newCommand->loadFromString(subSaveString);
+        addContent(newCommand);
     }
-
-    if(saveString.size() == 1) // if there is only on objects in the list
-    {
-        if(cutString(saveString[0], ";")[1] == "Command") // Find what kind of object to create
-          {
-            Command *newCommand;
-            newCommand = new Command();
-            newCommand->loadFromString(saveString);
-            addContent(newCommand);
-          }
-    finished = true;
-    }
-
-    if(saveString.size() < 1) // if the list is empty
-    {
-      finished = true;
-    }
-  }
-
-
 }
+
 void Application::kill(int position)
 {
     delContent(position);

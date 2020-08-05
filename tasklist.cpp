@@ -68,6 +68,7 @@ NinjatodolaObject* TaskList::action(std::string action)
 
   else if(action == "6") // Move right
     {
+      setShow(true);
       // Verify that the object is not empty
       if(getListSize() > 0)
         {
@@ -343,12 +344,15 @@ std::vector<NinjatodolaObject*> TaskList::repr(std::vector<NinjatodolaObject*> v
 
   // add self to vector
   reprVector.push_back(this);
+  if(attrShow)
+  {
+    // pass to content
+    for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
+      {
+        reprVector = attrContent[i]->repr(reprVector);
+      }
+  }
 
-  // pass to content
-  for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
-    {
-      reprVector = attrContent[i]->repr(reprVector);
-    }
   //return vector
   return reprVector;
 }
@@ -401,6 +405,7 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
   setShow(show);
 
   saveString.erase(saveString.begin()); // erase first line
+
   bool finished(false);
   while(!finished)
   {
@@ -425,6 +430,7 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
           {
             subSaveString.push_back(saveString[z]);
           }
+
           //erase from vector
           saveString.erase(saveString.begin(), saveString.begin() + i);
 
@@ -443,11 +449,11 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newCommand->loadFromString(subSaveString);
             addContent(newCommand);
           }
-          else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+          else if(cutString(subSaveString[0], ";")[1] == "Application") // Find what kind of object to create
           {
             Application *newApplication;
             newApplication = new Application();
-            newApplication->loadFromString(saveString);
+            newApplication->loadFromString(subSaveString);
             addContent(newApplication);
           }
 
@@ -479,11 +485,11 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newCommand->loadFromString(subSaveString);
             addContent(newCommand);
           }
-        else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+        else if(cutString(subSaveString[0], ";")[1] == "Application") // Find what kind of object to create
           {
             Application *newApplication;
             newApplication = new Application();
-            newApplication->loadFromString(saveString);
+            newApplication->loadFromString(subSaveString);
             addContent(newApplication);
           }
       }
