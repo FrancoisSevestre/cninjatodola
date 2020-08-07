@@ -185,5 +185,5 @@ void Command::loadFromString(std::vector<std::string> saveString)
 
 void Command::kill(int position)
 {
-    position = position;
+    position = position; //useless
 }

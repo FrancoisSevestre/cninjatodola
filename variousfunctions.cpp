@@ -18,7 +18,7 @@ std::string singleCharacterInput()
 
 }
 
-std::vector<std::string> cutString(std::string toBeCut, std::string separator)
+std::vector<std::string> cutString(std::string toBeCut, std::string separator, bool getLast)
 {
   size_t pos(0);
   std::string strPart;
@@ -29,6 +29,10 @@ std::vector<std::string> cutString(std::string toBeCut, std::string separator)
     strPart = toBeCut.substr(0, pos); //delimit part
     strVector.push_back(strPart); // add part to vector
     toBeCut.erase(0, pos + separator.length()); // erase part
+  }
+  if(getLast) //get the part after the last separator
+  {
+    strVector.push_back(toBeCut);
   }
   return strVector;
 

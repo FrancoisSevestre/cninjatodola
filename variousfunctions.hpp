@@ -4,7 +4,7 @@
 #include <vector>
 
 std::string singleCharacterInput();
-std::vector<std::string> cutString(std::string toBeCut, std::string separator);
+std::vector<std::string> cutString(std::string toBeCut, std::string separator, bool getLast = false);
 bool fileExists(const std::string name);
 
 #endif // VARIOUSFUNCTIONS_H

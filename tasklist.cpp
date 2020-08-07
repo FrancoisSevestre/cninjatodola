@@ -2,6 +2,8 @@
 #include "variousfunctions.hpp"
 #include "command.hpp"
 #include "Application.hpp"
+#include "file.hpp"
+
 // std libraries
 #include <string>
 #include <vector>
@@ -333,7 +335,33 @@ void TaskList::addDirectory()
 
 void TaskList::addFile()
 {
-  
+  //Ask for position
+  long unsigned int filePosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> filePosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (filePosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new File(true), filePosition); // create a new Command and add the pointer to the list
+
+
 }
 
 //Representation
@@ -456,6 +484,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newApplication->loadFromString(subSaveString);
             addContent(newApplication);
           }
+          else if(cutString(subSaveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(subSaveString);
+            addContent(newFile);
+          }
 
         }
       }
@@ -492,6 +527,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newApplication->loadFromString(subSaveString);
             addContent(newApplication);
           }
+        else if(cutString(subSaveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(subSaveString);
+            addContent(newFile);
+          }
       }
     }
 
@@ -517,6 +559,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newApplication = new Application();
             newApplication->loadFromString(saveString);
             addContent(newApplication);
+          }
+          else if(cutString(saveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(saveString);
+            addContent(newFile);
           }
     finished = true;
     }
