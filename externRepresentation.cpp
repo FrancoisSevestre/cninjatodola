@@ -174,7 +174,35 @@ globalRepresentation += elementRepresentation;
             //else
           else
             {
-              colorizedElementRepresentation = colorize(coloredGrey, elementSelfRepr, endColored);
+              colorizedElementRepresentation = colorize(coloredGreen, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
+      else if (vecToBeReprensented[i]->getType() == "Directory")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          elementRepresentation += colorize(coloredBlue, "|->", endColored);
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "."; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightGreen, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredYellow, elementSelfRepr, endColored);
             }
           elementRepresentation += colorizedElementRepresentation; //add self representation
           elementRepresentation += "\n"; // finish line

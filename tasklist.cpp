@@ -3,6 +3,7 @@
 #include "command.hpp"
 #include "Application.hpp"
 #include "file.hpp"
+#include "Directory.hpp"
 
 // std libraries
 #include <string>
@@ -330,7 +331,31 @@ void TaskList::addLink()
 
 void TaskList::addDirectory()
 {
+  //Ask for position
+  long unsigned int DirectoryPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> DirectoryPosition;
+    std::cin.ignore(); // debug
 
+    if(std::cin.fail() || (DirectoryPosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new Directory(true), DirectoryPosition); // create a new Command and add the pointer to the list
 }
 
 void TaskList::addFile()
@@ -491,6 +516,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newFile->loadFromString(subSaveString);
             addContent(newFile);
           }
+          else if(cutString(subSaveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(subSaveString);
+            addContent(newDirectory);
+          }
 
         }
       }
@@ -534,6 +566,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newFile->loadFromString(subSaveString);
             addContent(newFile);
           }
+        else if(cutString(subSaveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(subSaveString);
+            addContent(newDirectory);
+          }
       }
     }
 
@@ -566,6 +605,13 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newFile = new File();
             newFile->loadFromString(saveString);
             addContent(newFile);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(saveString);
+            addContent(newDirectory);
           }
     finished = true;
     }

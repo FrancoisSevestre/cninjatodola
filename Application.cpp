@@ -443,5 +443,5 @@ void Application::loadFromString(std::vector<std::string> saveString)
 
 void Application::kill(int position)
 {
-    delContent(position);
+  delContent(position);
 }
