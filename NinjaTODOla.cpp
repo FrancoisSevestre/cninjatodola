@@ -11,6 +11,7 @@
 #include "tasklist.hpp"
 #include "externRepresentation.hpp"
 #include "variousfunctions.hpp"
+#include "keyboardInput.hpp"
 
 using namespace std;
 
@@ -113,8 +114,10 @@ int NinjaTODOla()
 
 
       // Ask user for action
-      string userChoice;
-      userChoice = singleCharacterInput();
+      string userChoice {""};
+      userChoice += keyboardInput(); //Direct input from the keyboard
+      // need to change the type of userChoice to char
+
 
       // Main menu
         // if the action in not object dependant

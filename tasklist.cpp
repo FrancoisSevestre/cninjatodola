@@ -69,7 +69,7 @@ NinjatodolaObject* TaskList::action(std::string action)
       delSublist();
     }
 
-  else if(action == "6") // Move right
+  else if(action == "6" || action == "C") // Move right
     {
       setShow(true);
       // Verify that the object is not empty
@@ -80,13 +80,13 @@ NinjatodolaObject* TaskList::action(std::string action)
         }
     }
 
-  else if(action == "4") // Move left:
+  else if(action == "4" || action == "D") // Move left:
     {
       // Make the motherList the current object
       toBeReturned = &getMotherList();
     }
 
-  else if(action == "8") // Mouve up
+  else if(action == "8" || action == "A") // Mouve up
     {
       // Verify that the object is not the first of the list
       if(getPositionInMotherList() != 0)
@@ -96,7 +96,7 @@ NinjatodolaObject* TaskList::action(std::string action)
         }
     }
 
-  else if(action == "2") // Move down
+  else if(action == "2" || action == "B") // Move down
     {
       // Verify that the object is not the last of the list
       int PositionInMotherListMax(getMotherList().getContent().size() - 1);
