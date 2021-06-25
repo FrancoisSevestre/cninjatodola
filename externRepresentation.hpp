@@ -3,10 +3,11 @@
 // std libraries
 #include <string>
 #include <vector>
+
 //custom libraries
-#include "ninjatodolaobject.h"
-#include "ninjatodolalist.h"
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
+#include "ninjatodolalist.hpp"
+#include "ninjatodolaobject.hpp"
 
 /**
  * Transform pointers list into a human readable list.\n

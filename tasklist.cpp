@@ -1,9 +1,14 @@
-#include "tasklist.h"
+#include "tasklist.hpp"
+#include "variousfunctions.hpp"
+#include "command.hpp"
+#include "Application.hpp"
+#include "file.hpp"
+#include "Directory.hpp"
+
 // std libraries
 #include <string>
 #include <vector>
 #include <stdlib.h>
-#include "variousfunctions.h"
 #include <iostream>
 
 
@@ -64,8 +69,9 @@ NinjatodolaObject* TaskList::action(std::string action)
       delSublist();
     }
 
-  else if(action == "6") // Move right
+  else if(action == "6" || action == "C") // Move right
     {
+      setShow(true);
       // Verify that the object is not empty
       if(getListSize() > 0)
         {
@@ -74,13 +80,13 @@ NinjatodolaObject* TaskList::action(std::string action)
         }
     }
 
-  else if(action == "4") // Move left:
+  else if(action == "4" || action == "D") // Move left:
     {
       // Make the motherList the current object
       toBeReturned = &getMotherList();
     }
 
-  else if(action == "8") // Mouve up
+  else if(action == "8" || action == "A") // Mouve up
     {
       // Verify that the object is not the first of the list
       if(getPositionInMotherList() != 0)
@@ -90,7 +96,7 @@ NinjatodolaObject* TaskList::action(std::string action)
         }
     }
 
-  else if(action == "2") // Move down
+  else if(action == "2" || action == "B") // Move down
     {
       // Verify that the object is not the last of the list
       int PositionInMotherListMax(getMotherList().getContent().size() - 1);
@@ -113,9 +119,37 @@ NinjatodolaObject* TaskList::action(std::string action)
 
   else if(action=="$") // add special objects in the list
     {
-      //not implemented yet!
-      std::cout << "\nPas encore implémenté" << std::endl;
-      system("sleep 1");
+      std::cout << "Quel type d'objet ajouter?\n1-Application\n2-Commande\n3-Lien vers une liste\n4-Dossier\n5-Fichier\n>";
+      long unsigned int typeChoice;
+      std::cin >> typeChoice;
+      std::cin.ignore();
+      if(!std::cin.fail()) //To verify
+      {
+          if(typeChoice == 1)
+          {
+              addApplication();
+          }
+          else if (typeChoice == 2)
+          {
+              addCommand();
+          }
+          else if (typeChoice == 3)
+          {
+              addLink();
+          }
+          else if (typeChoice == 4)
+          {
+              addDirectory();
+          }
+          else if (typeChoice == 5)
+          {
+              addFile();
+          }
+          else
+          {
+              std::cout << "Erreur: Le choix n'est pas dans la liste." << std::endl;
+          }
+      }
     }
 
   else if(action=="X") // Copy the object and store it in chache
@@ -135,7 +169,7 @@ NinjatodolaObject* TaskList::action(std::string action)
   return toBeReturned;
 }
 
-void TaskList::addSubList(bool placed) // BUGGED! :after a placed, the taskname is empty
+void TaskList::addSubList(bool placed) 
 {
   // Ask the name of the sublist
   std::string taskName(""); // Non-void
@@ -231,6 +265,130 @@ void TaskList::changeListName()
   setSelfRepr(newListName);
 }
 
+void TaskList::addApplication()
+{
+  //Ask for position
+  long unsigned int AppPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+    {
+    std::cout << "Entrer une position: ";
+    std::cin >> AppPosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (AppPosition > attrContent.size())) // if user didn't enter proper position
+      {
+        // user didn't input a number
+        std::cin.clear(); // reset failbit
+        std::cout << "Ce n'est pas une position valide!" << std::endl;
+        std::cin.ignore(256, '\n'); // discard characters
+      }
+
+    else
+      {
+        isOK = true;
+      }
+    }
+
+    addContent(new Application(true), AppPosition); // create a new Application and add the pointer to the list
+}
+
+void TaskList::addCommand()
+{
+  //Ask for position
+  long unsigned int commandPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> commandPosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (commandPosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new Command(true), commandPosition); // create a new Command and add the pointer to the list
+
+}
+
+void TaskList::addLink()
+{
+
+}
+
+void TaskList::addDirectory()
+{
+  //Ask for position
+  long unsigned int DirectoryPosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> DirectoryPosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (DirectoryPosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new Directory(true), DirectoryPosition); // create a new Command and add the pointer to the list
+}
+
+void TaskList::addFile()
+{
+  //Ask for position
+  long unsigned int filePosition;
+  // Verify that user entered a proper int:
+  bool isOK(false);
+  while(!isOK)
+  {
+    std::cout << "Entrer une position: ";
+    std::cin >> filePosition;
+    std::cin.ignore(); // debug
+
+    if(std::cin.fail() || (filePosition > attrContent.size())) // if user didn't enter proper position
+    {
+      // user didn't input a number
+      std::cin.clear(); // reset failbit
+      std::cout << "Ce n'est pas une position valide!" << std::endl;
+      std::cin.ignore(256, '\n'); // discard characters
+    }
+
+    else
+    {
+      isOK = true;
+    }
+  }
+
+  addContent(new File(true), filePosition); // create a new Command and add the pointer to the list
+
+
+}
+
 //Representation
 std::vector<NinjatodolaObject*> TaskList::repr(std::vector<NinjatodolaObject*> vec)
 {
@@ -239,12 +397,15 @@ std::vector<NinjatodolaObject*> TaskList::repr(std::vector<NinjatodolaObject*> v
 
   // add self to vector
   reprVector.push_back(this);
+  if(attrShow)
+  {
+    // pass to content
+    for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
+      {
+        reprVector = attrContent[i]->repr(reprVector);
+      }
+  }
 
-  // pass to content
-  for(long unsigned int i(0); i<attrContent.size(); i++) // for each contend object
-    {
-      reprVector = attrContent[i]->repr(reprVector);
-    }
   //return vector
   return reprVector;
 }
@@ -264,6 +425,24 @@ void TaskList::update() //reorder and unhighlight things
     }
 }
 
+std::string TaskList::saveAsString()
+{
+  //save list string
+  std::string saveString;
+  saveString += std::to_string(attrIndent) + ";";
+  saveString += attrType + ";";
+  saveString += attrSelfRepr + ";";
+  saveString += std::to_string(attrShow) + ";";
+  saveString += "\n";
+
+  //add liste content
+  for(unsigned long int i(0); i<attrContent.size(); i++)
+  {
+    saveString += attrContent[i]->saveAsString();
+  }
+  return saveString;
+}
+
 void TaskList::loadFromString(std::vector<std::string> saveString)
 {
   // load self from the first line
@@ -279,6 +458,7 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
   setShow(show);
 
   saveString.erase(saveString.begin()); // erase first line
+
   bool finished(false);
   while(!finished)
   {
@@ -303,6 +483,7 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
           {
             subSaveString.push_back(saveString[z]);
           }
+
           //erase from vector
           saveString.erase(saveString.begin(), saveString.begin() + i);
 
@@ -314,6 +495,35 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newList->loadFromString(subSaveString);
             addContent(newList);
           }
+          else if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(subSaveString);
+            addContent(newCommand);
+          }
+          else if(cutString(subSaveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(subSaveString);
+            addContent(newApplication);
+          }
+          else if(cutString(subSaveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(subSaveString);
+            addContent(newFile);
+          }
+          else if(cutString(subSaveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(subSaveString);
+            addContent(newDirectory);
+          }
+
         }
       }
       if(!found) //not found
@@ -335,6 +545,34 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
           newList->loadFromString(subSaveString);
           addContent(newList);
         }
+        else if(cutString(subSaveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(subSaveString);
+            addContent(newCommand);
+          }
+        else if(cutString(subSaveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(subSaveString);
+            addContent(newApplication);
+          }
+        else if(cutString(subSaveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(subSaveString);
+            addContent(newFile);
+          }
+        else if(cutString(subSaveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(subSaveString);
+            addContent(newDirectory);
+          }
       }
     }
 
@@ -346,6 +584,34 @@ void TaskList::loadFromString(std::vector<std::string> saveString)
             newList = new TaskList();
             newList->loadFromString(saveString);
             addContent(newList);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Command") // Find what kind of object to create
+          {
+            Command *newCommand;
+            newCommand = new Command();
+            newCommand->loadFromString(saveString);
+            addContent(newCommand);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Application") // Find what kind of object to create
+          {
+            Application *newApplication;
+            newApplication = new Application();
+            newApplication->loadFromString(saveString);
+            addContent(newApplication);
+          }
+          else if(cutString(saveString[0], ";")[1] == "File") // Find what kind of object to create
+          {
+            File *newFile;
+            newFile = new File();
+            newFile->loadFromString(saveString);
+            addContent(newFile);
+          }
+          else if(cutString(saveString[0], ";")[1] == "Directory") // Find what kind of object to create
+          {
+            Directory *newDirectory;
+            newDirectory = new Directory();
+            newDirectory->loadFromString(saveString);
+            addContent(newDirectory);
           }
     finished = true;
     }

@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 //custom libraries
-#include "ninjatodolaobject.h"
-#include "ninjatodolalist.h"
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
+#include "ninjatodolalist.hpp"
+#include "ninjatodolaobject.hpp"
 
 //Theme variable
 std::string indentationString("   ");
@@ -31,9 +31,34 @@ std::string globalRepr(std::vector<NinjatodolaObject*> vecToBeReprensented)
   // initialize string that will be returned
   std::string globalRepresentation;
 
+  //representation of the mainList
+int elementIndent = vecToBeReprensented[0]->getIndent();
+int elementPosition = vecToBeReprensented[0]->getPositionInMotherList();
+bool elementHighlight = vecToBeReprensented[0]->getHightlight(); // Not implemented yet
+std::string elementSelfRepr = vecToBeReprensented[0]->getSelfRepr();
+
+
+std::string elementRepresentation("*"); // reinit
+elementRepresentation += "."; //add a separator
+std::string colorizedElementRepresentation;
+// if highlighted
+if (elementHighlight)
+{
+colorizedElementRepresentation = colorize(hightlightGreen, elementSelfRepr, endHightlight);
+}
+//else
+else
+{
+  colorizedElementRepresentation = elementSelfRepr;
+}
+elementRepresentation += colorizedElementRepresentation; //add self representation
+elementRepresentation += "\n"; // finish line
+globalRepresentation += elementRepresentation;
+
+
   //append the string for each element of the vector
      //for each element
-  for (long unsigned int i(0); i<vecToBeReprensented.size(); i++)
+  for (long unsigned int i(1); i<vecToBeReprensented.size(); i++)
     {
       int elementIndent = vecToBeReprensented[i]->getIndent();
       int elementPosition = vecToBeReprensented[i]->getPositionInMotherList();
@@ -49,6 +74,7 @@ std::string globalRepr(std::vector<NinjatodolaObject*> vecToBeReprensented)
             {
               elementRepresentation += indentationString;
             }
+          elementRepresentation += colorize(coloredBlue, "|->", endColored);
           std::string stringPosition;
           stringPosition = std::to_string(elementPosition); // Convert position to string
           elementRepresentation += stringPosition; //add position
@@ -68,6 +94,120 @@ std::string globalRepr(std::vector<NinjatodolaObject*> vecToBeReprensented)
           elementRepresentation += "\n"; // finish line
           globalRepresentation += elementRepresentation;
         }
+      
+      else if (vecToBeReprensented[i]->getType() == "Command")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          elementRepresentation += colorize(coloredBlue, "|  ", endColored);
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "> "; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightBlue, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredYellow, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
+      
+      else if (vecToBeReprensented[i]->getType() == "Application")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          elementRepresentation += colorize(coloredBlue, "|->", endColored);
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "."; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightBlue, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredBlue, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
+      else if (vecToBeReprensented[i]->getType() == "File")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          elementRepresentation += colorize(coloredBlue, "|->", endColored);
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "."; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightYellow, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredGreen, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
+      else if (vecToBeReprensented[i]->getType() == "Directory")
+      {
+          //Command representation
+          std::string elementRepresentation(""); // reinit
+          for (int i(0); i<elementIndent; i++) //Add indent
+            {
+              elementRepresentation += indentationString;
+            }
+          elementRepresentation += colorize(coloredBlue, "|->", endColored);
+          std::string stringPosition;
+          stringPosition = std::to_string(elementPosition); // Convert position to string
+          elementRepresentation += stringPosition; //add position
+          elementRepresentation += "."; //add a separator
+          std::string colorizedElementRepresentation;
+            // if highlighted
+          if (elementHighlight)
+            {
+          colorizedElementRepresentation = colorize(hightlightGreen, elementSelfRepr, endHightlight);
+            }
+            //else
+          else
+            {
+              colorizedElementRepresentation = colorize(coloredYellow, elementSelfRepr, endColored);
+            }
+          elementRepresentation += colorizedElementRepresentation; //add self representation
+          elementRepresentation += "\n"; // finish line
+          globalRepresentation += elementRepresentation;
+      }
       // Insert new ObjectTypes HERE!
     }
 

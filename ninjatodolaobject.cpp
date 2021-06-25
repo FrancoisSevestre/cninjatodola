@@ -1,4 +1,5 @@
-#include "ninjatodolaobject.h"
+#include "ninjatodolaobject.hpp"
+
 // Constructors
 NinjatodolaObject::NinjatodolaObject(): attrSelfRepr("NinjaTODOla"), attrMotherList(this), attrPositionInMotherList(1), attrIndent(0), attrHightlight(false), attrType("NinjatodolaObject")
 {}

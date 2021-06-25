@@ -76,5 +76,5 @@ Thumbs.db
 *.save
 # config files
 *.json
-.vscode
+.vscode/*
 cninja
