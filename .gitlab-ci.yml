@@ -55,6 +55,7 @@ code_quality_job:
       - codequality-results/
 
 package_job:
+  needs: ["build"]
   image: docker:latest
   stage: package
   services:
