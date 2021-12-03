@@ -54,15 +54,3 @@ code_quality_job:
     paths:
       - codequality-results/
 
-package_job:
-  stage: package
-  services:
-    - docker:stable-dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  script:
-    - apt-get update -yq && apt-get install docker -yq
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - g++ -o cninjatodola Application.cpp command.cpp Directory.cpp externRepresentation.cpp file.cpp keyboardInput.cpp main.cpp NinjaTODOla.cpp ninjatodolalist.cpp ninjatodolaobject.cpp tasklist.cpp test_zone.cpp variousfunctions.cpp
-
-  image: gcc
