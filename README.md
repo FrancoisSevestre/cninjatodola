@@ -17,3 +17,10 @@ Ninjatodola is a TODO/mind mapping app with a lot of extra features, like bash a
 - Use the keyboard to append, explore and edit your task lists.
 - Press h for help.
 
+## 4. Docker ##
+- Build the image:
+`docker build -t cninjatodola-arch` .
+- Run the image:
+`docker run -ti cninjatodola-arch`
+
+
