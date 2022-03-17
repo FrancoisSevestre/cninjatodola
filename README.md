@@ -7,6 +7,8 @@ Ninjatodola is a TODO/mind mapping app with a lot of extra features, like bash a
 ### Linux ###
 - Compile: 
 `g++ -o cninjatodola Application.cpp command.cpp Directory.cpp externRepresentation.cpp file.cpp keyboardInput.cpp main.cpp NinjaTODOla.cpp ninjatodolalist.cpp ninjatodolaobject.cpp tasklist.cpp test_zone.cpp variousfunctions.cpp`
+<br />or
+`mkdir build && cd build && cmake .. && cmake --build .`
 - Allow execution: 
 `chmod u+x cninjatodola`
 - Run: 
