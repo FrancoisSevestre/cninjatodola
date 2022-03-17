@@ -4,7 +4,7 @@ RUN pacman -Syu --noconfirm
 
 RUN mkdir /app
 
-ADD .. /app/
+ADD . /app/
 
 WORKDIR /app
 

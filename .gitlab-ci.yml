@@ -63,7 +63,7 @@ code_linting_job:
   before_script:
     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker build -t "$CI_REGISTRY_IMAGE/cpplint" lintDF/
+    - cp lintDF/Dockerfile . && docker build -t "$CI_REGISTRY_IMAGE/cpplint" .
     - docker push "$CI_REGISTRY_IMAGE/cpplint"
     - docker run -t "$CI_REGISTRY_IMAGE/cpplint" > linting-results
   artifacts:
@@ -79,5 +79,5 @@ package_job:
   before_script:
     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" containerizationDF/
+    - cp containerization/Dockerfile . && docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
