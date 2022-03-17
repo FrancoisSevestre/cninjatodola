@@ -8,8 +8,8 @@
 # can use verions as well, like gcc:5.2
 # see https://hub.docker.com/_/gcc/
 stages:
-  - build
   - quality
+  - build
   - containerization
 
 image: gcc
@@ -31,10 +31,10 @@ build:
       #     - "*.o"
 
 # run tests using the binary built before
-#test:
-#  stage: test
-#  script:
-#    - ./runmytests.sh
+# test:
+#   stage: test
+#   script:
+#     - ./runmytests.sh
 
 code_quality_job:
   stage: quality
@@ -54,6 +54,20 @@ code_quality_job:
     paths:
       - codequality-results/
 
+code_linting_job:
+  stage: quality
+  image: docker:latest
+  allow_failure: true
+  services:
+    - docker:dind
+  script:
+    - docker run
+        --volume "$PWD":/code
+        francoissevestre/cpplint 2> linting-errors || echo "Linting errors found. See artifacts for more infos"
+  artifacts:
+    paths:
+      - linting-errors
+
 package_job:
   needs: ["build"]
   image: docker:latest
@@ -63,5 +77,5 @@ package_job:
   before_script:
     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" . 
+    - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
