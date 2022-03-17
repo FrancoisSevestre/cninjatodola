@@ -10,6 +10,7 @@
 stages:
   - build
   - quality
+  - linting
   - containerization
 
 image: gcc
@@ -54,6 +55,21 @@ code_quality_job:
     paths:
       - codequality-results/
 
+code_linting_job:
+  stage: linting
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/cpplint" lintDF/
+    - docker push "$CI_REGISTRY_IMAGE/cpplint"
+    - docker run -t "$CI_REGISTRY_IMAGE/cpplint" > linting-results
+  artifacts:
+    paths:
+      - linting-results
+
 package_job:
   needs: ["build"]
   image: docker:latest
@@ -63,5 +79,5 @@ package_job:
   before_script:
     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" . 
+    - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" containerizationDF/ 
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
