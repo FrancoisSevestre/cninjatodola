@@ -10,7 +10,7 @@
 stages:
   - build
   - quality
-  - package
+  - containerization
 
 image: gcc
 
@@ -57,7 +57,7 @@ code_quality_job:
 package_job:
   needs: ["build"]
   image: docker:latest
-  stage: package
+  stage: containerization
   services:
     - docker:dind
   before_script:
