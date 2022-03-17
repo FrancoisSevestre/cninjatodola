@@ -63,10 +63,10 @@ code_linting_job:
   script:
     - docker run
         --volume "$PWD":/code
-        francoissevestre/cpplint > linting-results
+        francoissevestre/cpplint 2> linting-errors || echo "Linting errors found. See artifacts for more infos"
   artifacts:
     paths:
-      - linting-results
+      - linting-errors
 
 package_job:
   needs: ["build"]
