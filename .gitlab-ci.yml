@@ -1,19 +1,18 @@
+---
 stages:
-  - quality
   - build
   - containerization
+  - quality
 
-image: gcc
-
-
-build:
+compilation_job:
   stage: build
-  before_script:
-    - apt update && apt -y install build-essential libssl-dev
+  image: docker:stable
+  services:
+    - docker:dind
   script:
-    - mkdir build && cd build
-    -  cmake ..
-    -  cmake --build .
+    - docker run
+        --volume "$PWD:/code"
+        registry.gitlab.com/francoissevestre/dockerfiles/cmake
   artifacts:
     paths:
       - cninjatodola
@@ -31,7 +30,8 @@ code_quality_job:
         --volume "$PWD"/src:/code
         --volume /var/run/docker.sock:/var/run/docker.sock
         --volume /tmp/cc:/tmp/cc
-        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
+        codeclimate/codeclimate analyze -f html
+        > ./codequality-results/index.html
   artifacts:
     paths:
       - codequality-results/
@@ -45,7 +45,9 @@ code_linting_job:
   script:
     - docker run
         --volume "$PWD"/src:/code
-        registry.gitlab.com/francoissevestre/dockerfiles/cpplint 2> linting-errors.txt || echo "Linting errors found. See artifacts for more infos"
+        registry.gitlab.com/francoissevestre/dockerfiles/cpplint
+        2> linting-errors.txt
+        || echo "Linting errors found. See artifacts for more infos"
   artifacts:
     paths:
       - linting-errors.txt
@@ -57,7 +59,8 @@ package_job:
   services:
     - docker:dind
   before_script:
-    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - echo $CI_BUILD_TOKEN |
+      docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
