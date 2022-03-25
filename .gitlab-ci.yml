@@ -63,10 +63,10 @@ code_linting_job:
   script:
     - docker run
         --volume "$PWD":/code
-        registry.gitlab.com/francoissevestre/dockerfiles/cpplint 2> linting-errors || echo "Linting errors found. See artifacts for more infos"
+        registry.gitlab.com/francoissevestre/dockerfiles/cpplint 2> linting-errors.txt || echo "Linting errors found. See artifacts for more infos"
   artifacts:
     paths:
-      - linting-errors
+      - linting-errors.txt
 
 package_job:
   needs: ["build"]
