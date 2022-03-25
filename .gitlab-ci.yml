@@ -21,7 +21,7 @@ build:
   # before_script:
   #   - apt update && apt -y install make autoconf
   script:
-    - g++ -o cninjatodola Application.cpp command.cpp Directory.cpp externRepresentation.cpp file.cpp keyboardInput.cpp main.cpp NinjaTODOla.cpp ninjatodolalist.cpp ninjatodolaobject.cpp tasklist.cpp test_zone.cpp variousfunctions.cpp
+    - cd src && g++ -o cninjatodola Application.cpp command.cpp Directory.cpp externRepresentation.cpp file.cpp keyboardInput.cpp main.cpp NinjaTODOla.cpp ninjatodolalist.cpp ninjatodolaobject.cpp tasklist.cpp test_zone.cpp variousfunctions.cpp
   artifacts:
     paths:
       - cninjatodola
