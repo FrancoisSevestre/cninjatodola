@@ -3,10 +3,13 @@ stages:
   - build
   - containerization
 
-image: archlinux:base-devel
+image: gcc
+
 
 build:
   stage: build
+  before_script:
+    - apt update && apt -y install build-essential libssl-dev
   script:
     - mkdir build && cd build
     -  cmake ..
