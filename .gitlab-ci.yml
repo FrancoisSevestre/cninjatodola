@@ -1,40 +1,21 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/C++.gitlab-ci.yml
-
-# use the official gcc image, based on debian
-# can use verions as well, like gcc:5.2
-# see https://hub.docker.com/_/gcc/
+---
 stages:
-  - quality
   - build
   - containerization
+  - quality
 
-image: gcc
-
-build:
+compilation_job:
   stage: build
-  # instead of calling g++ directly you can also use some build toolkit like make
-  # install the necessary build tools when needed
-  # before_script:
-  #   - apt update && apt -y install make autoconf
+  image: docker:stable
+  services:
+    - docker:dind
   script:
-    - g++ -o cninjatodola Application.cpp command.cpp Directory.cpp externRepresentation.cpp file.cpp keyboardInput.cpp main.cpp NinjaTODOla.cpp ninjatodolalist.cpp ninjatodolaobject.cpp tasklist.cpp test_zone.cpp variousfunctions.cpp
+    - docker run
+        --volume "$PWD:/code"
+        registry.gitlab.com/francoissevestre/dockerfiles/cmake
   artifacts:
     paths:
       - cninjatodola
-      # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-      # cache:
-      #   paths:
-      #     - "*.o"
-
-# run tests using the binary built before
-# test:
-#   stage: test
-#   script:
-#     - ./runmytests.sh
 
 code_quality_job:
   stage: quality
@@ -46,10 +27,11 @@ code_quality_job:
     - mkdir codequality-results
     - docker run
         --env CODECLIMATE_CODE="$PWD"
-        --volume "$PWD":/code
+        --volume "$PWD"/src:/code
         --volume /var/run/docker.sock:/var/run/docker.sock
         --volume /tmp/cc:/tmp/cc
-        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
+        codeclimate/codeclimate analyze -f html
+        > ./codequality-results/index.html
   artifacts:
     paths:
       - codequality-results/
@@ -62,20 +44,22 @@ code_linting_job:
     - docker:dind
   script:
     - docker run
-        --volume "$PWD":/code
-        francoissevestre/cpplint 2> linting-errors || echo "Linting errors found. See artifacts for more infos"
+        --volume "$PWD"/src:/code
+        registry.gitlab.com/francoissevestre/dockerfiles/cpplint > errors
+        || echo "done"
   artifacts:
     paths:
-      - linting-errors
+      - src/linting_results 
 
-package_job:
-  needs: ["build"]
+containerization_job:
+  needs: ["compilation_job"]
   image: docker:latest
   stage: containerization
   services:
     - docker:dind
   before_script:
-    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - echo $CI_BUILD_TOKEN |
+      docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
