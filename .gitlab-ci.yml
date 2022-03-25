@@ -45,7 +45,7 @@ code_linting_job:
   script:
     - docker run
         --volume "$PWD"/src:/code
-        registry.gitlab.com/francoissevestre/dockerfiles/cpplint
+        registry.gitlab.com/francoissevestre/dockerfiles/cpplint > errors
   artifacts:
     paths:
       - src/linting_results 
