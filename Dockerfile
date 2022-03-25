@@ -1,6 +1,4 @@
-FROM archlinux:base-devel
-
-RUN pacman -Syu --noconfirm
+FROM registry.gitlab.com/francoissevestre/dockerfiles/cmake
 
 RUN mkdir /app
 
