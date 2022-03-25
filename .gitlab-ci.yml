@@ -48,7 +48,7 @@ code_linting_job:
         registry.gitlab.com/francoissevestre/dockerfiles/cpplint
   artifacts:
     paths:
-      - src/linting_results
+      - src/linting_results 
 
 containerization_job:
   needs: ["compilation_job"]
