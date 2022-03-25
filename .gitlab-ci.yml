@@ -62,7 +62,7 @@ code_linting_job:
     - docker:dind
   script:
     - docker run
-        --volume "$PWD":/code
+        --volume "$PWD"/src:/code
         registry.gitlab.com/francoissevestre/dockerfiles/cpplint 2> linting-errors.txt || echo "Linting errors found. See artifacts for more infos"
   artifacts:
     paths:
