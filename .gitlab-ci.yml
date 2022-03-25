@@ -46,11 +46,9 @@ code_linting_job:
     - docker run
         --volume "$PWD"/src:/code
         registry.gitlab.com/francoissevestre/dockerfiles/cpplint
-        2> linting-errors.txt
-        || echo "Linting errors found. See artifacts for more infos"
   artifacts:
     paths:
-      - linting-errors.txt
+      - src/linting_results
 
 containerization_job:
   needs: ["compilation_job"]
