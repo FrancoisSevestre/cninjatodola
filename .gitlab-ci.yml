@@ -52,7 +52,7 @@ code_linting_job:
     paths:
       - linting-errors.txt
 
-package_job:
+containerization_job:
   needs: ["compilation_job"]
   image: docker:latest
   stage: containerization
