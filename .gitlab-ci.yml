@@ -53,7 +53,7 @@ code_linting_job:
       - linting-errors.txt
 
 package_job:
-  needs: ["build"]
+  needs: ["compilation_job"]
   image: docker:latest
   stage: containerization
   services:
