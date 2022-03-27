@@ -1,8 +1,14 @@
 ---
 stages:
+  - check_images
   - build
   - containerization
   - quality
+
+build_docker_images:
+  stage: check_images
+  needs:
+    pipeline: FrancoisSevestre/dockerfiles
 
 compilation_job:
   stage: build
@@ -49,7 +55,7 @@ code_linting_job:
         || echo "done"
   artifacts:
     paths:
-      - src/linting_results 
+      - src/linting_results
 
 containerization_job:
   needs: ["compilation_job"]
