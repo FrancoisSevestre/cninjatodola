@@ -1,8 +1,13 @@
 ---
 stages:
+  - check_images
   - build
   - containerization
   - quality
+
+build_docker_images:
+  stage: check_images
+  trigger: FrancoisSevestre/dockerfiles
 
 compilation_job:
   stage: build
