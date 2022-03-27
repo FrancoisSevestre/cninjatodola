@@ -7,8 +7,8 @@ stages:
 
 build_docker_images:
   stage: check_images
-  trigger: FrancoisSevestre/dockerfiles
-  strategy: depend
+  needs:
+    pipeline: FrancoisSevestre/dockerfiles
 
 compilation_job:
   stage: build
