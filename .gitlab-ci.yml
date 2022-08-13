@@ -66,6 +66,7 @@ push_to_dockerhub_job:
   needs: ["compilation_job"]
   stage: containerization
   before_script:
+    - echo "$DOCKERHUB_USERNAME"
     - echo "$DOCKERHUB_TOKEN" |
       docker login --username "$DOCKERHUB_USERNAME" --password-stdin
   script:
