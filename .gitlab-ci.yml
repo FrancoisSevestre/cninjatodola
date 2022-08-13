@@ -72,3 +72,12 @@ push_to_dockerhub_job:
   script:
     - docker build -t "$DOCKERHUB_USERNAME/cninjatodola-archlinux" .
     - docker push "$DOCKERHUB_USERNAME/cninjatodola-archlinux"
+
+building_report_job:
+  stage: .pre
+  script:
+    - cat > report.md << EOF
+    -  # CninjaTODOla CI/CD pipeline report
+    - $CI_JOB_STARTED_AT
+    -
+    - ... to be filled ...
