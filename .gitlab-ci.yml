@@ -1,4 +1,8 @@
 ---
+image: docker:stable
+services:
+  - docker:dind
+
 stages:
   - check_images
   - build
@@ -12,9 +16,6 @@ build_docker_images:
 
 compilation_job:
   stage: build
-  image: docker:stable
-  services:
-    - docker:dind
   script:
     - docker run
         --volume "$PWD:/code"
@@ -25,10 +26,7 @@ compilation_job:
 
 code_quality_job:
   stage: quality
-  image: docker:stable
   allow_failure: true
-  services:
-    - docker:stable-dind
   script:
     - mkdir codequality-results
     - docker run
@@ -44,10 +42,7 @@ code_quality_job:
 
 code_linting_job:
   stage: quality
-  image: docker:latest
   allow_failure: true
-  services:
-    - docker:dind
   script:
     - docker run
         --volume "$PWD"/src:/code
@@ -59,10 +54,7 @@ code_linting_job:
 
 containerization_job:
   needs: ["compilation_job"]
-  image: docker:latest
   stage: containerization
-  services:
-    - docker:dind
   before_script:
     - echo $CI_BUILD_TOKEN |
       docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
