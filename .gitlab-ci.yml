@@ -75,9 +75,9 @@ push_to_dockerhub_job:
 
 building_report_job:
   stage: .pre
-  script:
-    - cat > report.md << EOF
-    -  # CninjaTODOla CI/CD pipeline report
-    - $CI_JOB_STARTED_AT
-    -
-    - ... to be filled ...
+  script: |
+     cat > report.md << EOF
+     # CninjaTODOla CI/CD pipeline report
+     $CI_JOB_STARTED_AT
+     
+     ... to be filled ...
