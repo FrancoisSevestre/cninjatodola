@@ -67,7 +67,7 @@ push_to_dockerhub_job:
   stage: containerization
   before_script:
     - echo "$DOCKERHUB_TOKEN" |
-      docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      docker login --username "$DOCKERHUB_USERNAME" --password-stdin
   script:
     - docker build -t "$francoissevestre/cninjatodola-archlinux" .
     - docker push "$francoissevestre/cninjatodola-archlinux"
