@@ -14,7 +14,7 @@ build_docker_images:
   needs:
     pipeline: FrancoisSevestre/dockerfiles
   script:
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Needed docker images have already be built." >> report.md
 
 compilation_job:
@@ -23,7 +23,7 @@ compilation_job:
     - docker run
         --volume "$PWD:/code"
         registry.gitlab.com/francoissevestre/dockerfiles/cmake
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Compilation done with CMake" >> report.md
   artifacts:
     paths:
@@ -41,7 +41,7 @@ code_quality_job:
         --volume /tmp/cc:/tmp/cc
         codeclimate/codeclimate analyze -f html
         > ./codequality-results/index.html
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Code complexity mesured with codeclimate" >> report.md
   artifacts:
     paths:
@@ -55,7 +55,7 @@ code_linting_job:
         --volume "$PWD"/src:/code
         registry.gitlab.com/francoissevestre/dockerfiles/cpplint > errors
         || echo "done"
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Code linting performed with cpplint" >> report.md
   artifacts:
     paths:
@@ -70,7 +70,7 @@ containerization_job:
   script:
     - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Docker image pushed to Gitlab registry" >> report.md
 
 push_to_dockerhub_job:
@@ -83,7 +83,7 @@ push_to_dockerhub_job:
   script:
     - docker build -t "$DOCKERHUB_USERNAME/cninjatodola-archlinux" .
     - docker push "$DOCKERHUB_USERNAME/cninjatodola-archlinux"
-    - echo "Job: CI_JOB_NAME, Stage: $CI_JOB_STAGE" >> report.md
+    - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Docker image pushed to dockerhub registry" >> report.md
 
 building_report_job:
