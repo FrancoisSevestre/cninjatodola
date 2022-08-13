@@ -25,6 +25,7 @@ compilation_job:
   artifacts:
     paths:
       - cninjatodola
+      - report.md
 
 code_quality_job:
   stage: quality
@@ -43,6 +44,7 @@ code_quality_job:
   artifacts:
     paths:
       - codequality-results/
+      - report.md
 
 code_linting_job:
   stage: quality
@@ -57,6 +59,7 @@ code_linting_job:
   artifacts:
     paths:
       - src/linting_results
+      - report.md
 
 containerization_job:
   needs: ["compilation_job"]
@@ -69,6 +72,9 @@ containerization_job:
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
     - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Docker image pushed to Gitlab registry" >> report.md
+  artifacts:
+    paths:
+      - report.md
 
 push_to_dockerhub_job:
   needs: ["compilation_job"]
@@ -82,6 +88,9 @@ push_to_dockerhub_job:
     - docker push "$DOCKERHUB_USERNAME/cninjatodola-archlinux"
     - echo "Job-> CI_JOB_NAME, Stage-> $CI_JOB_STAGE" >> report.md
     - echo "Docker image pushed to dockerhub registry" >> report.md
+  artifacts:
+    paths:
+      - report.md
 
 building_report_job:
   stage: .pre
@@ -89,6 +98,14 @@ building_report_job:
      cat > report.md << EOF
      # CninjaTODOla CI/CD pipeline report
      Creation date: $CI_JOB_STARTED_AT
+  artifacts:
+    paths:
+      - report.md
+
+closing_report_job:
+  stage: .post
+  script: 
+    - echo "closing report" >> report.md
   artifacts:
     paths:
       - report.md
