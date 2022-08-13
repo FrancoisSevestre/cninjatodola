@@ -81,3 +81,6 @@ building_report_job:
      $CI_JOB_STARTED_AT
      
      ... to be filled ...
+  artifacts:
+    paths:
+      - report.md
