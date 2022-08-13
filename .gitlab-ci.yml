@@ -66,7 +66,7 @@ push_to_dockerhub_job:
   needs: ["compilation_job"]
   stage: containerization
   before_script:
-    - echo "$DOCKERHUB_USERNAME"
+    - echo "pushing image to $DOCKERHUB_USERNAME/cninjatodola-archlinux on hub"
     - echo "$DOCKERHUB_TOKEN" |
       docker login --username "$DOCKERHUB_USERNAME" --password-stdin
   script:
