@@ -136,7 +136,7 @@ closing_report_job:
   stage: .post
   script:
     - ls -alsh
-    - cat $(ls -t *report.md) | tac >> report.md
+    - cat $(ls -tr *report.md) > report.md
   artifacts:
     paths:
       - report.md
