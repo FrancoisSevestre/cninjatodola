@@ -26,7 +26,7 @@ compilation_job:
       Stage: $CI_JOB_STAGE
       Job: $CI_JOB_NAME
       Compilation done with CMake
-      EOF
+    EOF
   artifacts:
     paths:
       - cninjatodola
@@ -50,7 +50,7 @@ code_quality_job:
       Stage: $CI_JOB_STAGE
       Job: $CI_JOB_NAME
       Code quality mesurement with CodeClimate
-      EOF
+    EOF
   artifacts:
     paths:
       - codequality-results/
@@ -71,7 +71,7 @@ code_linting_job:
       Job: $CI_JOB_NAME
       Code linting performed with cpplint
       Number of lines in linting results:
-      EOF
+    EOF
     echo "    -> $(wc -l src/linting_results) " >> code_linting_report.md
   artifacts:
     paths:
@@ -93,7 +93,7 @@ containerization_job:
       Stage: $CI_JOB_STAGE
       Job: $CI_JOB_NAME
       Docker image pushed to Gitlab registry
-      EOF
+    EOF
   artifacts:
     paths:
       - containerization_report.md
@@ -114,7 +114,7 @@ push_to_dockerhub_job:
       Stage: $CI_JOB_STAGE
       Job: $CI_JOB_NAME
       Docker image pushed to dockerhub registry
-      EOF
+    EOF
   artifacts:
     paths:
       - containerization2_report.md
@@ -122,10 +122,10 @@ push_to_dockerhub_job:
 building_report_job:
   stage: .pre
   script: |
-     cat > report.md << EOF
-     # CninjaTODOla CI/CD pipeline report
-     Creation date: $CI_JOB_STARTED_AT
-     EOF
+    cat > report.md << EOF
+    # CninjaTODOla CI/CD pipeline report
+    Creation date: $CI_JOB_STARTED_AT
+    EOF
   artifacts:
     paths:
       - report.md
@@ -133,6 +133,7 @@ building_report_job:
 closing_report_job:
   stage: .post
   script:
+    - ls
     - cat report.md compilation_report.md code_quality_report.md \
       code_linting_report.md containerization_report.md \
       containerization2_report.md >> final_report.md
