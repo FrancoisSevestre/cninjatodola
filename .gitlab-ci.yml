@@ -133,10 +133,8 @@ building_report_job:
 closing_report_job:
   stage: .post
   script:
-    - ls
-    - cat report.md compilation_report.md code_quality_report.md \
-      code_linting_report.md containerization_report.md \
-      containerization2_report.md >> final_report.md
+    - ls -alsh
+    - cat *.md >> final_report.md
   artifacts:
     paths:
       - final_report.md
