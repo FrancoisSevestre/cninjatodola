@@ -124,6 +124,8 @@ building_report_job:
   script: |
     cat > report.md << EOF
     # CninjaTODOla CI/CD pipeline report
+    ## Pipeline infos
+    Commit: $CI_COMMIT_MESSAGE
     Creation date: $CI_JOB_STARTED_AT
     EOF
   artifacts:
@@ -134,7 +136,7 @@ closing_report_job:
   stage: .post
   script:
     - ls -alsh
-    - cat *.md >> final_report.md
+    - cat $(ls -t *report.md) | tac >> report.md
   artifacts:
     paths:
-      - final_report.md
+      - report.md
