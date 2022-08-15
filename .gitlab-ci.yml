@@ -1,4 +1,8 @@
 ---
+image: docker:stable
+services:
+  - docker:dind
+
 stages:
   - check_images
   - build
@@ -12,23 +16,25 @@ build_docker_images:
 
 compilation_job:
   stage: build
-  image: docker:stable
-  services:
-    - docker:dind
   script:
     - docker run
         --volume "$PWD:/code"
         registry.gitlab.com/francoissevestre/dockerfiles/cmake
+  after_script: |
+    cat > compilation_report.md << EOF
+    ## Code compilation
+      Stage: $CI_JOB_STAGE
+      Job: $CI_JOB_NAME
+      Compilation done with CMake
+    EOF
   artifacts:
     paths:
       - cninjatodola
+      - compilation_report.md
 
 code_quality_job:
   stage: quality
-  image: docker:stable
   allow_failure: true
-  services:
-    - docker:stable-dind
   script:
     - mkdir codequality-results
     - docker run
@@ -38,34 +44,99 @@ code_quality_job:
         --volume /tmp/cc:/tmp/cc
         codeclimate/codeclimate analyze -f html
         > ./codequality-results/index.html
+  after_script: |
+    cat > code_quality_report.md << EOF
+    ## Code quality mesurement
+      Stage: $CI_JOB_STAGE
+      Job: $CI_JOB_NAME
+      Code quality mesurement with CodeClimate
+    EOF
   artifacts:
     paths:
       - codequality-results/
+      - code_quality_report.md
 
 code_linting_job:
   stage: quality
-  image: docker:latest
   allow_failure: true
-  services:
-    - docker:dind
   script:
     - docker run
         --volume "$PWD"/src:/code
         registry.gitlab.com/francoissevestre/dockerfiles/cpplint > errors
         || echo "done"
+  after_script: |
+    cat > code_linting_report.md << EOF
+    ## Code linting
+      Stage: $CI_JOB_STAGE
+      Job: $CI_JOB_NAME
+      Code linting performed with cpplint
+      Number of lines in linting results:
+    EOF
+    echo "    -> $(wc -l src/linting_results) " >> code_linting_report.md
   artifacts:
     paths:
       - src/linting_results
+      - code_linting_report.md
 
 containerization_job:
   needs: ["compilation_job"]
-  image: docker:latest
   stage: containerization
-  services:
-    - docker:dind
   before_script:
     - echo $CI_BUILD_TOKEN |
       docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - docker build -t "$CI_REGISTRY_IMAGE/cninjatodola-archlinux" .
     - docker push "$CI_REGISTRY_IMAGE/cninjatodola-archlinux"
+  after_script: |
+    cat > containerization_report.md << EOF
+    ## Containerization to gitlab
+      Stage: $CI_JOB_STAGE
+      Job: $CI_JOB_NAME
+      Docker image pushed to Gitlab registry
+    EOF
+  artifacts:
+    paths:
+      - containerization_report.md
+
+push_to_dockerhub_job:
+  needs: ["compilation_job"]
+  stage: containerization
+  before_script:
+    - echo "pushing image to $DOCKERHUB_USERNAME/cninjatodola-archlinux on hub"
+    - echo "$DOCKERHUB_TOKEN" |
+      docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+  script:
+    - docker build -t "$DOCKERHUB_USERNAME/cninjatodola-archlinux" .
+    - docker push "$DOCKERHUB_USERNAME/cninjatodola-archlinux"
+  after_script: |
+    cat > containerization2_report.md << EOF
+    ## Containerization to dockerhub
+      Stage: $CI_JOB_STAGE
+      Job: $CI_JOB_NAME
+      Docker image pushed to dockerhub registry
+    EOF
+  artifacts:
+    paths:
+      - containerization2_report.md
+
+building_report_job:
+  stage: .pre
+  script: |
+    cat > start_report.md << EOF
+    # CninjaTODOla CI/CD pipeline report
+    ## Pipeline infos
+    Commit: $CI_COMMIT_MESSAGE
+    Creation date: $CI_JOB_STARTED_AT
+    EOF
+  artifacts:
+    paths:
+      - start_report.md
+
+closing_report_job:
+  stage: .post
+  script:
+    - ls -alsh
+    - cat $(ls -tr *report.md) > report.md
+  artifacts:
+    paths:
+      - report.md
