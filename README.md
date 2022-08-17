@@ -1,4 +1,6 @@
 # NinjaTODOla in C++! #
+[![pipeline status](https://gitlab.com/FrancoisSevestre/cninjatodola/badges/master/pipeline.svg)](https://gitlab.com/FrancoisSevestre/cninjatodola/-/commits/master)
+
 ## 1. Descritpion ##
 Ninjatodola is a TODO/mind mapping app with a lot of extra features, like bash and python commands in app execution or file browsing.
 
