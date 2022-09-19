@@ -4,7 +4,6 @@
 ## 1. Descritpion ##
 Ninjatodola is a TODO/mind mapping app with a lot of extra features, like bash and python commands in app execution or file browsing.
 
-
 ## 2. Build ##
 ### Linux ###
 - Compile: 
